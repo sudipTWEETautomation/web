@@ -1499,12 +1499,12 @@ async function cancelSlot(orderId) {
   } catch (e) { toast(e.message, 'err'); }
 }
 function resetBuy() {
-  clearAllTimers(); activeOrders = []; clearPersistedOrders(); checkActiveBanner();
+  clearAllTimers();
+  activeOrders = activeOrders.filter(o => o.status === 'pending' && new Date(o.expires_at).getTime() > Date.now());
+  activeOrders.forEach(o => { if (o.status === 'pending') startSlotPoll(o); });
+  saveActiveOrders();
+  checkActiveBanner();
   showBS(1);
-  document.getElementById('ord-svc-nm').textContent   = '—';
-  document.getElementById('ord-main-num').textContent  = 'Waiting...';
-  const timer = document.getElementById('ord-timer'); if (timer) timer.textContent = '10:00';
-  const badge = document.getElementById('bs4-overall-badge'); if (badge) badge.innerHTML = '';
 }
 function clearAllTimers() {
   if (globalCountdown) { clearInterval(globalCountdown); globalCountdown = null; }
