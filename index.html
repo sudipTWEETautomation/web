@@ -150,7 +150,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .empty{padding:32px;text-align:center;color:var(--muted);font-size:.68rem;font-family:var(--mono)}
 .sh{font-family:var(--mono);font-size:.52rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin:18px 0 8px;display:flex;align-items:center;justify-content:space-between}
 
-/* BUY — MULTI-SERVER + MULTI-OTP */
+/* BUY */
 .buy-step{display:none}
 .buy-step.active{display:block}
 .svc-search{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);display:flex;align-items:center;gap:8px;padding:9px 12px;margin-bottom:10px;transition:border-color .13s}
@@ -168,19 +168,16 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .chk{width:18px;height:18px;border:1px solid var(--border2);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.6rem;transition:all .13s}
 .svc-i.sel .chk{border-color:var(--text);background:var(--text);color:#000}
 
-/* Server chips */
 .srv-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .srv-chip{padding:7px 14px;border-radius:20px;border:1px solid var(--border);font-family:var(--mono);font-size:.66rem;cursor:pointer;color:var(--text2);background:var(--bg2);transition:all .13s}
 .srv-chip:hover,.srv-chip.sel{border-color:var(--text);color:var(--text);background:var(--acc2)}
 
-/* Active order box */
 .ord-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:12px;overflow:hidden}
 .ord-hdr{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 .ord-num-big{font-family:var(--mono);font-size:1.4rem;font-weight:700;letter-spacing:2px}
 .ord-timer{font-family:var(--mono);font-size:.8rem;color:var(--amber);background:rgba(255,152,0,.08);padding:4px 10px;border-radius:var(--r)}
 .ord-body{padding:18px}
 
-/* OTP slots */
 .otp-slots{display:flex;flex-direction:column;gap:8px}
 .otp-slot{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .otp-slot.got{border-color:var(--green);background:rgba(76,175,80,.05)}
@@ -205,15 +202,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .pdot{width:5px;height:5px;border-radius:50%;background:currentColor;animation:blink 1.3s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
-/* DEPOSIT (UPI + Redeem) */
+/* DEPOSIT */
 .dep-steps{display:flex;margin-bottom:20px;border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
-.dep-step{flex:1;padding:12px 16px;font-family:var(--mono);font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);cursor:pointer;border-right:1px solid var(--border);transition:all .15s;text-align:center;background:none;border-bottom:none;border-top:none;font-family:var(--font);font-weight:600;font-size:.72rem}
+.dep-step{flex:1;padding:12px 16px;font-family:var(--font);font-weight:600;font-size:.72rem;color:var(--muted);cursor:pointer;border-right:1px solid var(--border);transition:all .15s;text-align:center;background:none;border-bottom:none;border-top:none}
 .dep-step:last-child{border-right:none}
 .dep-step.act{background:var(--acc2);color:var(--text)}
 .dep-view{display:none}
 .dep-view.act{display:block}
 
-/* UPI FLOW */
 .upi-step{display:none}
 .upi-step.active{display:block}
 .step-nav{display:flex;align-items:center;gap:8px;margin-bottom:20px;font-family:var(--mono);font-size:.6rem;color:var(--muted)}
@@ -239,18 +235,16 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .up-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
 .up-prev{width:100%;max-height:180px;object-fit:contain;border-radius:6px;display:none}
 
-/* REDEEM */
 .rdm-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:22px;text-align:center;margin-bottom:14px}
 .rdm-ico{font-size:2rem;margin-bottom:12px}
 .rdm-t{font-size:.85rem;font-weight:700;margin-bottom:6px}
 .rdm-s{font-size:.68rem;color:var(--muted);line-height:1.7;margin-bottom:16px}
 
-/* RECHARGE HIST */
 .rch-hist{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
 .rch-i{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
 .rch-i:last-child{border-bottom:none}
 .ri-a{font-family:var(--mono);font-size:.82rem;font-weight:700}
-.ri-d{font-family:var(--mono);font-size:.56px;color:var(--muted);margin-top:2px}
+.ri-d{font-size:.56rem;color:var(--muted);margin-top:2px;font-family:var(--mono)}
 
 /* HISTORY */
 .filter-pills{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
@@ -260,13 +254,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .ord-i{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .1s}
 .ord-i:last-child{border-bottom:none}
 .ord-i:hover{background:var(--bg3)}
-.oi-svc{font-size:.76rem;font-weight:700}
-.oi-num{font-family:var(--mono);font-size:.64px;color:var(--muted);margin-top:2px}
-.oi-t{font-family:var(--mono);font-size:.56px;color:var(--muted);margin-top:2px}
-.oi-price{font-family:var(--mono);font-size:.7rem;color:var(--red);font-weight:600}
-.oi-otp{font-family:var(--mono);font-size:.78rem;color:var(--green);font-weight:700;letter-spacing:2px;margin-top:2px}
 
-/* TXN */
 .txn-list{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
 .txn-i{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
 .txn-i:last-child{border-bottom:none}
@@ -278,7 +266,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .txn-a{font-family:var(--mono);font-size:.74rem;font-weight:600;white-space:nowrap}
 .txn-a.cr{color:var(--green)}.txn-a.db{color:var(--red)}
 
-/* PROFILE */
 .prof-h{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:26px;text-align:center;margin-bottom:14px}
 .prof-av{width:64px;height:64px;border-radius:50%;background:var(--bg4);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:1.4rem;font-weight:700;color:var(--text);margin:0 auto 12px}
 .prof-nm{font-size:.95rem;font-weight:700}
@@ -289,11 +276,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .ic-l{font-family:var(--mono);font-size:.52rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
 .ic-v{font-size:.74rem;color:var(--text2);text-align:right;max-width:200px;word-break:break-all}
 
-/* REFER */
 .refer-code-box{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:14px;display:flex;align-items:center;justify-content:space-between;margin-top:12px}
 .rc-code{font-family:var(--mono);font-size:1.1rem;font-weight:700;letter-spacing:4px;color:var(--text)}
 
-/* MODAL */
 .modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;align-items:flex-end;justify-content:center}
 .modal-ov.open{display:flex}
 .modal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2) var(--r2) 0 0;width:100%;max-width:480px;max-height:88vh;display:flex;flex-direction:column;animation:sup .2s ease}
@@ -305,11 +290,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .modal-body{padding:16px;flex:1;overflow-y:auto}
 .modal-foot{padding:12px 16px;border-top:1px solid var(--border);flex-shrink:0;display:flex;gap:8px}
 
-/* SB OVERLAY */
 .sb-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:39}
 .sb-ov.open{display:block}
 
-/* TOAST */
 .toast-w{position:fixed;bottom:18px;right:18px;z-index:999;display:flex;flex-direction:column;gap:5px;pointer-events:none}
 .toast{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:9px 14px;font-size:.68rem;font-family:var(--mono);white-space:nowrap;animation:tin .16s ease;display:flex;align-items:center;gap:6px}
 @keyframes tin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
@@ -317,7 +300,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .toast.err{border-color:rgba(244,67,54,.3);color:var(--red)}
 .toast.info{border-color:rgba(255,255,255,.15);color:var(--text2)}
 
-/* MISC */
 .spin{display:inline-block;width:13px;height:13px;border:1.5px solid var(--border2);border-top-color:var(--text);border-radius:50%;animation:rot .6s linear infinite}
 @keyframes rot{to{transform:rotate(360deg)}}
 .ld{text-align:center;padding:32px;color:var(--muted);font-size:.68rem;font-family:var(--mono)}
@@ -336,9 +318,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
   .toast-w{bottom:14px;right:10px;left:10px;align-items:center}
   .toast{white-space:normal;text-align:center}
 }
-@media(max-width:360px){
-  .sg{grid-template-columns:1fr}
-}
+@media(max-width:360px){.sg{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -449,7 +429,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 <!-- MAIN APP -->
 <div class="page" id="page-main">
   <div class="sb-ov" id="sb-ov" onclick="closeSb()"></div>
-
   <aside class="sb" id="sb">
     <div class="sb-logo">Sasta<span>OTP</span></div>
     <nav class="sb-nav">
@@ -514,7 +493,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
       <div class="tc" id="tab-buy">
         <div class="ph"><div><div class="pt">Buy Number</div><div class="ps">Service → Server → OTP</div></div></div>
 
-        <!-- Step 1: Service -->
         <div class="buy-step active" id="bs1">
           <div class="sh" style="margin-top:0">Choose Service</div>
           <div class="svc-search">
@@ -526,13 +504,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
           <div id="svc-empty" class="empty" style="display:none">No services found</div>
         </div>
 
-        <!-- Step 2: Server -->
         <div class="buy-step" id="bs2">
           <button class="g-btn g-btn-sm" style="margin-bottom:14px" onclick="showBS(1)">← Back</button>
           <div class="sh" style="margin-top:0">Select Server for <span id="srv-svc-nm" style="color:var(--text)">—</span></div>
           <div id="srv-loading" class="ld"><div class="spin"></div>Loading servers...</div>
           <div class="srv-chips" id="srv-chips"></div>
-          <br>
           <div id="slot-count-wrap" style="display:none;margin-bottom:12px">
             <div class="sh" style="margin-top:0">How many OTPs? <span style="color:var(--muted)">(max 5)</span></div>
             <div style="display:flex;gap:6px;flex-wrap:wrap" id="slot-count-chips"></div>
@@ -540,7 +516,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
           <button class="btn-full" id="srv-next-btn" style="display:none" onclick="showBS(3)">Continue →</button>
         </div>
 
-        <!-- Step 3: Confirm -->
         <div class="buy-step" id="bs3">
           <button class="g-btn g-btn-sm" style="margin-bottom:14px" onclick="showBS(2)">← Back</button>
           <div class="sh" style="margin-top:0">Order Summary</div>
@@ -556,7 +531,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
           <button class="btn-full success" id="cf-buy-btn" onclick="doCreateOrders()"><span id="cf-buy-txt">✓ Confirm & Get Numbers</span></button>
         </div>
 
-        <!-- Step 4: Active Orders -->
         <div class="buy-step" id="bs4">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
             <button class="g-btn g-btn-sm" onclick="resetBuy()">⊕ New Order</button>
@@ -580,21 +554,16 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
       <!-- DEPOSIT -->
       <div class="tc" id="tab-deposit">
         <div class="ph"><div><div class="pt">Deposit</div><div class="ps">Add funds to wallet</div></div></div>
-
         <div class="dep-steps">
           <button class="dep-step act" id="dep-tab-upi" onclick="switchDep('upi')">UPI Payment</button>
           <button class="dep-step" id="dep-tab-redeem" onclick="switchDep('redeem')">Redeem Code</button>
         </div>
 
-        <!-- UPI VIEW -->
         <div class="dep-view act" id="dep-upi">
-          <!-- UPI Step 1: Enter Amount -->
           <div class="upi-step active" id="us1">
             <div class="step-nav">
-              <div class="step-num act">1</div>
-              <div class="step-div"></div>
-              <div class="step-num">2</div>
-              <div class="step-div"></div>
+              <div class="step-num act">1</div><div class="step-div"></div>
+              <div class="step-num">2</div><div class="step-div"></div>
               <div class="step-num">3</div>
             </div>
             <div class="sh" style="margin-top:0">Enter Amount</div>
@@ -609,13 +578,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
             <button class="btn-full" onclick="goUs2()">Next → Show UPI ID</button>
           </div>
 
-          <!-- UPI Step 2: Pay -->
           <div class="upi-step" id="us2">
             <div class="step-nav">
-              <div class="step-num act">1</div>
-              <div class="step-div"></div>
-              <div class="step-num act">2</div>
-              <div class="step-div"></div>
+              <div class="step-num act">1</div><div class="step-div"></div>
+              <div class="step-num act">2</div><div class="step-div"></div>
               <div class="step-num">3</div>
             </div>
             <div class="sh" style="margin-top:0">Pay via UPI</div>
@@ -635,13 +601,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
             </div>
           </div>
 
-          <!-- UPI Step 3: Upload -->
           <div class="upi-step" id="us3">
             <div class="step-nav">
-              <div class="step-num act">1</div>
-              <div class="step-div"></div>
-              <div class="step-num act">2</div>
-              <div class="step-div"></div>
+              <div class="step-num act">1</div><div class="step-div"></div>
+              <div class="step-num act">2</div><div class="step-div"></div>
               <div class="step-num act">3</div>
             </div>
             <div class="sh" style="margin-top:0">Upload Screenshot</div>
@@ -666,7 +629,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
           <div class="rch-hist" id="rch-hist"><div class="empty">No recharge requests</div></div>
         </div>
 
-        <!-- REDEEM VIEW -->
         <div class="dep-view" id="dep-redeem">
           <div class="rdm-card">
             <div class="rdm-ico">🎫</div>
@@ -806,7 +768,7 @@ let allSvcs = [];
 let selSvc = null;
 let selServer = null;
 let slotCount = 1;
-let activeOrders = []; // [{order_id, number, service, price, status, otp, sms, pollTimer, countdown}]
+let activeOrders = [];
 let globalCountdown = null;
 let allOrders = [];
 let orderFilter = 'all';
@@ -1070,9 +1032,9 @@ async function loadServers(){
 
 function renderServers(srvs){
   const el=document.getElementById('srv-chips');
-  // Add "All Servers (Multi)" as first option
-  const all=[...srvs,'All Servers'];
-  el.innerHTML=all.map(s=>`<div class="srv-chip" id="srv-${s.replace(/\s/g,'_')}" onclick="selServerFn('${s}',this)">${s}</div>`).join('');
+  const allOptions=[...srvs,'All Servers'];
+  el.innerHTML=allOptions.map(s=>`
+    <div class="srv-chip" id="srv-${s.replace(/\s/g,'_')}" onclick="selServerFn('${s}',this)">${s}</div>`).join('');
 }
 
 function selServerFn(name,el){
@@ -1121,37 +1083,51 @@ async function doCreateOrders(){
   btnLoad('cf-buy-txt','cf-buy-btn',true);
   activeOrders=[];
 
-  // determine which servers to use
-  let servers=[];
+  // FIX: correct server cycling logic
+  // Fetch real server list, then distribute slots across servers evenly
+  let baseServers=[];
   if(selServer==='All Servers'){
-    // fetch available servers and spread slots across them
-    try{const d=await api('GET','/api/servers');servers=d.servers;}catch{servers=['Server1'];}
-    // cycle servers for each slot
-    const baseServers=servers.length>0?servers:['Server1'];
-    for(let i=0;i<slotCount;i++) servers[i%slotCount]=baseServers[i%baseServers.length];
+    try{const d=await api('GET','/api/servers');baseServers=d.servers;}
+    catch{baseServers=['Server1'];}
+    if(!baseServers.length) baseServers=['Server1'];
   }else{
-    for(let i=0;i<slotCount;i++) servers.push(selServer);
+    baseServers=[selServer];
+  }
+
+  // Build per-slot server assignment by cycling through baseServers
+  const slotServers=[];
+  for(let i=0;i<slotCount;i++){
+    slotServers.push(baseServers[i % baseServers.length]);
   }
 
   const created=[];
   let firstExpiry=null;
   for(let i=0;i<slotCount;i++){
     try{
-      const d=await api('POST','/api/orders/create',{service_id:selSvc.id,server:servers[i]||selServer});
+      const d=await api('POST','/api/orders/create',{service_id:selSvc.id,server:slotServers[i]});
       created.push({
-        order_id:d.order_id,number:d.number,service:d.service,
-        server:servers[i],price:d.price,
-        status:'pending',otp:null,sms:null,
-        expires_at:d.expires_at,can_cancel_at:d.can_cancel_at,
+        order_id:d.order_id,
+        number:d.number,
+        service:d.service,
+        server:slotServers[i],
+        price:d.price,
+        status:'pending',
+        otp:null,
+        sms:null,
+        expires_at:d.expires_at,
+        can_cancel_at:d.can_cancel_at,
         pollTimer:null
       });
       if(!firstExpiry) firstExpiry=d.expires_at;
-      user.wallet_balance=(parseFloat(user.wallet_balance||0)-parseFloat(d.price)).toFixed(2);
+      user.wallet_balance=(parseFloat(user.wallet_balance||0)-parseFloat(d.price));
       updBal();
     }catch(e){toast('Slot '+(i+1)+': '+e.message,'err');}
   }
 
-  if(!created.length){btnLoad('cf-buy-txt','cf-buy-btn',false,'✓ Confirm & Get Numbers');return;}
+  if(!created.length){
+    btnLoad('cf-buy-txt','cf-buy-btn',false,'✓ Confirm & Get Numbers');
+    return;
+  }
   activeOrders=created;
   showBS(4);
   renderOtpSlots();
@@ -1161,11 +1137,8 @@ async function doCreateOrders(){
   btnLoad('cf-buy-txt','cf-buy-btn',false,'✓ Confirm & Get Numbers');
 
   document.getElementById('ord-svc-nm').textContent=selSvc.name;
-  if(created.length===1){
-    document.getElementById('ord-main-num').textContent=created[0].number;
-  }else{
-    document.getElementById('ord-main-num').textContent=created.length+' Numbers';
-  }
+  document.getElementById('ord-main-num').textContent=
+    created.length===1 ? created[0].number : created.length+' Numbers';
 }
 
 function renderOtpSlots(){
@@ -1176,23 +1149,37 @@ function renderOtpSlots(){
       <div class="otp-slot-info">
         <div class="otp-slot-svc">${esc(o.service||'—')} — Slot ${i+1}</div>
         <div class="otp-slot-num">${esc(o.number||'Allocating...')}</div>
-        ${o.status==='success'?`<div class="otp-slot-code" onclick="navigator.clipboard.writeText('${escA(o.otp||'')}').then(()=>toast('Copied!'))">${esc(o.otp||'—')}</div>${o.sms?`<div class="otp-slot-sms">${esc(o.sms)}</div>`:''}`
-          :o.status==='cancelled'?`<div style="font-family:var(--mono);font-size:.65rem;color:var(--red)">Cancelled</div>`
-          :o.status==='expired'?`<div style="font-family:var(--mono);font-size:.65rem;color:var(--red)">Expired — Refunded</div>`
-          :`<div class="otp-slot-wait"><span class="spin"></span>Waiting<span class="wait-dots"></span></div>`}
+        ${o.status==='success'
+          ? `<div class="otp-slot-code" onclick="copyOtp('${escA(o.otp||'')}')">${esc(o.otp||'—')}</div>
+             ${o.sms?`<div class="otp-slot-sms">${esc(o.sms)}</div>`:''}`
+          : o.status==='cancelled'
+            ? `<div style="font-family:var(--mono);font-size:.65rem;color:var(--red)">Cancelled</div>`
+            : o.status==='expired'
+              ? `<div style="font-family:var(--mono);font-size:.65rem;color:var(--red)">Expired — Refunded</div>`
+              : `<div class="otp-slot-wait"><span class="spin"></span>Waiting<span class="wait-dots"></span></div>`
+        }
       </div>
       <div class="otp-slot-acts">
-        ${o.status==='success'?`<button class="slot-copy" onclick="navigator.clipboard.writeText('${escA(o.otp||'')}').then(()=>toast('Copied!'))">Copy</button>`:''}
-        ${o.status==='pending'?`<button class="slot-cancel" id="cancel-${o.order_id}" style="display:none" onclick="cancelSlot('${o.order_id}')">Cancel</button>`:''}
+        ${o.status==='success'
+          ? `<button class="slot-copy" onclick="copyOtp('${escA(o.otp||'')}')">Copy</button>`
+          : ''}
+        ${o.status==='pending'
+          ? `<button class="slot-cancel" id="cancel-${o.order_id}" style="display:none" onclick="cancelSlot('${o.order_id}')">Cancel</button>`
+          : ''}
         <span class="sbadge ${o.status}">${o.status==='pending'?'<span class="pdot"></span>':''} ${o.status}</span>
       </div>
     </div>`).join('');
+}
+
+function copyOtp(otp){
+  navigator.clipboard.writeText(otp).then(()=>toast('OTP copied!'));
 }
 
 function startSlotPoll(ord){
   const canCancelTime=new Date(ord.can_cancel_at).getTime();
   ord.pollTimer=setInterval(async()=>{
     if(ord.status!=='pending'){clearInterval(ord.pollTimer);return;}
+    // Show cancel button after cooldown
     if(Date.now()>=canCancelTime){
       const cancelBtn=document.getElementById('cancel-'+ord.order_id);
       if(cancelBtn) cancelBtn.style.display='';
@@ -1200,19 +1187,29 @@ function startSlotPoll(ord){
     try{
       const d=await api('GET','/api/orders/'+ord.order_id+'/poll');
       if(d.status==='success'){
-        ord.status='success';ord.otp=d.otp_received;ord.sms=d.full_sms||'';
+        ord.status='success';
+        ord.otp=d.otp_received;
+        // FIX: now correctly reading full_sms from poll response
+        ord.sms=d.full_sms||'';
         clearInterval(ord.pollTimer);
-        renderOtpSlots();updateOverallBadge();
-        user.wallet_balance=await refreshBal();updBal();
-        toast('OTP received for slot!');
+        renderOtpSlots();
+        updateOverallBadge();
+        user.wallet_balance=await refreshBal();
+        updBal();
+        toast('OTP received for slot '+(activeOrders.indexOf(ord)+1)+'!');
       }else if(d.status==='expired'){
-        ord.status='expired';clearInterval(ord.pollTimer);
-        renderOtpSlots();updateOverallBadge();
-        user.wallet_balance=await refreshBal();updBal();
+        ord.status='expired';
+        clearInterval(ord.pollTimer);
+        renderOtpSlots();
+        updateOverallBadge();
+        user.wallet_balance=await refreshBal();
+        updBal();
         toast('Slot expired — refunded','info');
       }else if(d.status==='cancelled'){
-        ord.status='cancelled';clearInterval(ord.pollTimer);
-        renderOtpSlots();updateOverallBadge();
+        ord.status='cancelled';
+        clearInterval(ord.pollTimer);
+        renderOtpSlots();
+        updateOverallBadge();
       }
     }catch{}
   },4000);
@@ -1245,7 +1242,7 @@ function startGlobalCountdown(expiresAt){
 
 async function cancelSlot(orderId){
   const ord=activeOrders.find(o=>o.order_id===orderId);
-  if(!ord) return;
+  if(!ord)return;
   try{
     const d=await api('POST','/api/orders/'+orderId+'/cancel');
     ord.status='cancelled';
@@ -1275,7 +1272,7 @@ async function refreshBal(){
   catch{return user?.wallet_balance||0;}
 }
 
-// ── DEPOSIT — UPI Steps ──
+// ── DEPOSIT UPI Steps ──
 function switchDep(mode){
   document.querySelectorAll('.dep-step').forEach(b=>b.classList.remove('act'));
   document.querySelectorAll('.dep-view').forEach(v=>v.classList.remove('act'));
@@ -1330,7 +1327,6 @@ function genQR(amt){
   try{new QRCode(container,{text:upiStr,width:164,height:164,colorDark:'#000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});}
   catch{}
 }
-function updateQR(){genQR(parseFloat(document.getElementById('rch-amt').value));}
 
 function onScreenshot(inp){
   ssFile=inp.files[0];
@@ -1368,7 +1364,10 @@ async function loadRchHist(){
     if(!d.length){el.innerHTML='<div class="empty">No recharge requests</div>';return;}
     el.innerHTML=d.map(r=>`
       <div class="rch-i">
-        <div style="flex:1"><div class="ri-a">₹${parseFloat(r.amount).toFixed(2)}</div><div class="ri-d">${fmtDate(r.created_at)}</div></div>
+        <div style="flex:1">
+          <div class="ri-a">₹${parseFloat(r.amount).toFixed(2)}</div>
+          <div class="ri-d">${fmtDate(r.created_at)}</div>
+        </div>
         <span class="sbadge ${r.status==='approved'?'success':r.status==='rejected'?'expired':'pending'}" style="padding:2px 8px;font-size:.55rem">${r.status}</span>
       </div>`).join('');
   }catch{}
@@ -1382,12 +1381,18 @@ async function doRedeem(){
   if(!code){err.textContent='Enter a code';err.classList.add('on');return;}
   btnLoad('rdm-txt','rdm-btn',true);
   try{
+    // FIX: now calls the correct /api/payment/redeem endpoint that exists in backend
     const d=await api('POST','/api/payment/redeem',{code});
-    ok.textContent='✓ ₹'+(d.amount||'?')+' credited to your wallet!';ok.classList.add('on');
+    ok.textContent='✓ ₹'+(d.amount||'?')+' credited to your wallet!';
+    ok.classList.add('on');
     document.getElementById('rdm-code').value='';
-    user.wallet_balance=await refreshBal();updBal();
+    user.wallet_balance=await refreshBal();
+    updBal();
     toast('Code redeemed!');
-  }catch(e){err.textContent=e.message||'Invalid or used code';err.classList.add('on');}
+  }catch(e){
+    err.textContent=e.message||'Invalid or used code';
+    err.classList.add('on');
+  }
   finally{btnLoad('rdm-txt','rdm-btn',false,'Redeem Now');}
 }
 
@@ -1408,7 +1413,7 @@ async function loadOrders(){
 function filterOrders(f,el){
   orderFilter=f;
   document.querySelectorAll('.pill').forEach(p=>p.classList.remove('act'));
-  if(el)el.classList.add('act');
+  if(el) el.classList.add('act');
   renderOrders();
 }
 
@@ -1417,22 +1422,21 @@ function renderOrders(){
   const el=document.getElementById('ord-list');
   if(!filtered.length){el.innerHTML='<div class="empty">No orders found</div>';return;}
   el.innerHTML=filtered.map(o=>`
-    <div class="ord-i" onclick="showOrdModal(${escA(JSON.stringify(o))})">
+    <div class="ord-i" onclick="showOrdModal(${escJ(o)})">
       <div style="flex:1;min-width:0">
-        <div class="oi-svc">${esc(o.service_name||'—')}</div>
+        <div style="font-size:.76rem;font-weight:700">${esc(o.service_name||'—')}</div>
         <div style="font-family:var(--mono);font-size:.66rem;color:var(--muted);margin-top:2px">${esc(o.number||'—')}</div>
         <div style="font-family:var(--mono);font-size:.56rem;color:var(--muted);margin-top:2px">${fmtDate(o.created_at)}</div>
       </div>
       <div style="text-align:right;flex-shrink:0">
-        <div class="oi-price">-₹${parseFloat(o.price||0).toFixed(2)}</div>
-        ${o.otp_received?`<div class="oi-otp">${esc(o.otp_received)}</div>`:''}
+        <div style="font-family:var(--mono);font-size:.7rem;color:var(--red);font-weight:600">-₹${parseFloat(o.price||0).toFixed(2)}</div>
+        ${o.otp_received?`<div style="font-family:var(--mono);font-size:.78rem;color:var(--green);font-weight:700;letter-spacing:2px;margin-top:2px">${esc(o.otp_received)}</div>`:''}
         <div style="margin-top:4px"><span class="sbadge ${o.status}" style="padding:2px 8px;font-size:.52rem">${o.status}</span></div>
       </div>
     </div>`).join('');
 }
 
-function showOrdModal(json){
-  let o;try{o=typeof json==='string'?JSON.parse(json):json;}catch{return;}
+function showOrdModal(o){
   document.getElementById('modal-order-body').innerHTML=`
     <div class="ic-row"><span class="ic-l">Service</span><span class="ic-v">${esc(o.service_name||'—')}</span></div>
     <div class="ic-row"><span class="ic-l">Number</span><span class="ic-v" style="font-family:var(--mono)">${esc(o.number||'—')}</span></div>
@@ -1440,13 +1444,17 @@ function showOrdModal(json){
     <div class="ic-row"><span class="ic-l">Price</span><span class="ic-v">₹${parseFloat(o.price||0).toFixed(2)}</span></div>
     <div class="ic-row"><span class="ic-l">Status</span><span class="ic-v"><span class="sbadge ${o.status}" style="padding:2px 8px;font-size:.6rem">${o.status}</span></span></div>
     ${o.otp_received?`<div class="ic-row"><span class="ic-l">OTP</span><span class="ic-v" style="font-family:var(--mono);font-size:1rem;font-weight:700;color:var(--green);cursor:pointer" onclick="navigator.clipboard.writeText('${escA(o.otp_received)}').then(()=>toast('Copied!'))">${esc(o.otp_received)}</span></div>`:''}
+    ${o.full_sms?`<div class="ic-row" style="flex-direction:column;align-items:flex-start;gap:4px"><span class="ic-l">Full SMS</span><span style="font-family:var(--mono);font-size:.62rem;color:var(--muted);line-height:1.6;word-break:break-all">${esc(o.full_sms)}</span></div>`:''}
     <div class="ic-row"><span class="ic-l">Date</span><span class="ic-v">${fmtDate(o.created_at)}</span></div>`;
   openModal('modal-order');
 }
 
 // ── Transactions ──
 async function loadTxns(page=1){
-  if(page===1){document.getElementById('txn-loading').style.display='block';document.getElementById('txn-list').style.display='none';}
+  if(page===1){
+    document.getElementById('txn-loading').style.display='block';
+    document.getElementById('txn-list').style.display='none';
+  }
   try{
     const d=await api('GET','/api/user/wallet');
     document.getElementById('txn-loading').style.display='none';
@@ -1465,16 +1473,18 @@ async function loadTxns(page=1){
 function loadMoreTxns(){txnPage++;loadTxns(txnPage);}
 
 // ── Refer ──
+// FIX: refer_reward now comes from /api/user/profile (backend fixed to include it)
 async function loadRefer(){
   try{
     const d=await api('GET','/api/user/profile');
     user=d;updBal();
     document.getElementById('refer-code').textContent=d.refer_code||'——';
     document.getElementById('total-referred').textContent=d.total_referred||0;
-    document.getElementById('refer-reward').textContent=d.refer_reward||10;
-    document.getElementById('r2').textContent=d.refer_reward||10;
+    const reward=d.refer_reward||10;
+    document.getElementById('refer-reward').textContent=reward;
+    document.getElementById('r2').textContent=reward;
     document.getElementById('r-count').textContent=d.total_referred||0;
-    document.getElementById('refer-earned').textContent=((d.total_referred||0)*(d.refer_reward||10)).toFixed(0);
+    document.getElementById('refer-earned').textContent=((d.total_referred||0)*reward).toFixed(0);
   }catch{}
 }
 function copyReferCode(){
@@ -1495,7 +1505,8 @@ async function loadProfile(){
   catch{}
 }
 
-// ── Apply ──
+// ── Apply Service ──
+// FIX: now calls /api/service-requests which exists in backend
 async function doApply(){
   const name=document.getElementById('apply-name').value.trim();
   const url=document.getElementById('apply-url').value.trim();
@@ -1505,14 +1516,16 @@ async function doApply(){
   if(!name){err.textContent='Enter service name';err.classList.add('on');return;}
   btnLoad('apply-txt','apply-btn',true);
   try{
-    await api('POST','/api/service-requests',{name,url,description:desc});
-    ok.textContent='✓ Request submitted! We\'ll review within 48h.';ok.classList.add('on');
+    const d=await api('POST','/api/service-requests',{name,url,description:desc});
+    ok.textContent='✓ '+(d.message||'Request submitted!');
+    ok.classList.add('on');
     document.getElementById('apply-name').value='';
     document.getElementById('apply-url').value='';
     document.getElementById('apply-desc').value='';
     toast('Request submitted!');
-  }catch{
-    ok.textContent='✓ Request received!';ok.classList.add('on');toast('Request received!');
+  }catch(e){
+    err.textContent=e.message||'Failed to submit';
+    err.classList.add('on');
   }
   finally{btnLoad('apply-txt','apply-btn',false,'Submit Request');}
 }
@@ -1535,6 +1548,8 @@ function fmtDate(ts){
 }
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function escA(s){return String(s).replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/\\/g,'\\\\');}
+// Safe JSON embed for onclick handlers — avoids escA issues with nested objects
+function escJ(o){return JSON.stringify(o).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/&/g,'\\u0026').replace(/'/g,'\\u0027');}
 
 initApp();
 </script>
