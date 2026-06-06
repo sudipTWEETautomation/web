@@ -355,7 +355,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 <!-- LOGIN -->
 <div class="page" id="page-login">
   <div class="auth-wrap">
-    <div class="auth-logo">Sasta<span>OTP</span></div>
+    <div class="auth-logo">FlashOTP<span>OTP</span></div>
     <div class="auth-tag">Sign In</div>
     <div class="auth-card">
       <div class="auth-sect">Account Access</div>
@@ -377,7 +377,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 <!-- SIGNUP -->
 <div class="page" id="page-signup">
   <div class="auth-wrap">
-    <div class="auth-logo">Sasta<span>OTP</span></div>
+    <div class="auth-logo">FlashOTP<span>Hub</span></div>
     <div class="auth-tag">Create Account</div>
     <div class="auth-card">
       <div id="su-s1">
@@ -405,7 +405,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 <!-- FORGOT -->
 <div class="page" id="page-forgot">
   <div class="auth-wrap">
-    <div class="auth-logo">Sasta<span>OTP</span></div>
+    <div class="auth-logo">FlashOTP<span>Hub</span></div>
     <div class="auth-tag">Reset Password</div>
     <div class="auth-card">
       <div id="fp-s1">
@@ -430,7 +430,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 <div class="page" id="page-main">
   <div class="sb-ov" id="sb-ov" onclick="closeSb()"></div>
   <aside class="sb" id="sb">
-    <div class="sb-logo">Sasta<span>OTP</span></div>
+    <div class="sb-logo">FlashOTP<span>Hub</span></div>
     <nav class="sb-nav">
       <div class="nav-s">Menu</div>
       <button class="ni act" id="ni-dashboard" onclick="tab('dashboard')"><span class="ni-ico">⊞</span> Dashboard</button>
@@ -460,7 +460,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 
   <div class="topbar">
     <button class="tb-menu" onclick="openSb()">☰</button>
-    <div class="tb-logo">Sasta<span>OTP</span></div>
+    <div class="tb-logo">FlashOTP<span>Hub</span></div>
     <div class="tb-bal">₹<b id="tb-balance">0.00</b></div>
     <button class="tb-menu" onclick="tab('profile')" style="margin-left:4px">○</button>
   </div>
@@ -696,7 +696,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
           <div style="font-size:1.8rem;margin-bottom:12px">✈</div>
           <div style="font-size:.85rem;font-weight:700;margin-bottom:8px">Join Our Channel</div>
           <div style="font-size:.7rem;color:var(--muted);line-height:1.8;margin-bottom:18px">Get updates on new services, downtime alerts, promo codes and support.</div>
-          <button class="btn-full" style="max-width:200px;margin:0 auto" onclick="window.open('https://t.me/sastaotphub','_blank')">Join Channel →</button>
+          <button class="btn-full" style="max-width:200px;margin:0 auto" onclick="window.open('https://t.me/FlashOTPotphub','_blank')">Join Channel →</button>
         </div>
         <div class="card-sm">
           <div class="ct">What you get</div>
@@ -1323,7 +1323,7 @@ function genQR(amt){
   document.getElementById('qr-amt-lbl').textContent='₹'+parseFloat(amt).toFixed(2);
   const container=document.getElementById('qr-container');
   container.innerHTML='';
-  const upiStr=`upi://pay?pa=${encodeURIComponent(upiId)}&pn=SastaOTP&am=${amt}&cu=INR`;
+  const upiStr=`upi://pay?pa=${encodeURIComponent(upiId)}&pn=FlashOTPOTP&am=${amt}&cu=INR`;
   try{new QRCode(container,{text:upiStr,width:164,height:164,colorDark:'#000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});}
   catch{}
 }
