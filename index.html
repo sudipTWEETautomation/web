@@ -904,6 +904,11 @@ function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0, 0);
+  const hashMap = {
+    'page-landing':'landing','page-login':'login',
+    'page-signup':'signup','page-forgot':'forgot','page-main':'dashboard'
+  };
+  if(hashMap[id]) history.pushState({page:id}, '', '#'+hashMap[id]);
 }
 function openSb() {
   document.getElementById('sb').classList.add('open');
@@ -921,6 +926,7 @@ function tab(t) {
     if (n) n.classList.toggle('act', x === t);
   });
   closeSb();
+  history.pushState({page:'page-main', tab:t}, '', '#'+t);
   if (t === 'dashboard') loadHome();
   if (t === 'deposit')   { loadUpiId(); loadRchHist(); }
   if (t === 'numhist')   loadOrders();
@@ -1748,8 +1754,34 @@ function escJ(o) {
   return JSON.stringify(o).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/&/g,'\\u0026').replace(/'/g,'\\u0027');
 }
 
-// BOOT
-initApp();
+ window.addEventListener('popstate', function(e){
+  if(e.state && e.state.tab){
+    tab(e.state.tab);
+  } else if(e.state && e.state.page){
+    showPage(e.state.page);
+  } else {
+    const hash = location.hash.replace('#','');
+    const tabs = ['dashboard','buy','deposit','numhist','txns','refer','telegram','apply','profile'];
+    const pages = {login:'page-login',signup:'page-signup',forgot:'page-forgot',landing:'page-landing'};
+    if(tabs.includes(hash) && token) tab(hash);
+    else if(pages[hash]) showPage(pages[hash]);
+  }
+});
+
+const startHash = location.hash.replace('#','');
+const startTabs = ['dashboard','buy','deposit','numhist','txns','refer','telegram','apply','profile'];
+const startPages = {login:'page-login',signup:'page-signup',forgot:'page-forgot',landing:'page-landing'};
+if(startTabs.includes(startHash) && token){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-main').classList.add('active');
+  tab(startHash);
+} else if(startPages[startHash]){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(startPages[startHash]).classList.add('active');
+}
+
+initApp(); 
+
 </script>
 </body>
 </html>
