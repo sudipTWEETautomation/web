@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>SastaOTP — Instant OTP Service</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0a;--bg2:#111111;--bg3:#1a1a1a;--bg4:#222222;
+  --border:#2a2a2a;--border2:#333333;
+  --text:#f0f0f0;--text2:#999;--muted:#555;
+  --acc:#ffffff;--acc2:rgba(255,255,255,.06);--acc3:rgba(255,255,255,.12);
+  --green:#4caf50;--red:#f44336;--amber:#ff9800;
+  --font:'Syne',sans-serif;--mono:'IBM Plex Mono',monospace;
+  --r:6px;--r2:12px;--r3:20px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{font-size:14px;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;overflow-x:hidden}
+.page{display:none;min-height:100vh}
+.page.active{display:flex;flex-direction:column}
+
+/* LANDING */
+#page-landing{background:var(--bg)}
+.l-wrap{flex:1;display:flex;flex-direction:column;min-height:100vh}
+.l-nav{display:flex;align-items:center;justify-content:space-between;padding:22px 28px;border-bottom:1px solid var(--border)}
+.logo{font-size:1rem;font-weight:800;letter-spacing:-0.5px;color:var(--text)}
+.logo span{color:var(--muted)}
+.l-nav-r{display:flex;gap:10px}
+.btn-ghost{background:none;border:1px solid var(--border2);color:var(--text2);border-radius:var(--r);padding:8px 18px;font-family:var(--font);font-size:.75rem;font-weight:500;cursor:pointer;transition:all .18s}
+.btn-ghost:hover{border-color:var(--text);color:var(--text)}
+.btn-wh{background:var(--text);border:none;color:#000;border-radius:var(--r);padding:8px 18px;font-family:var(--font);font-size:.75rem;font-weight:700;cursor:pointer;transition:opacity .18s}
+.btn-wh:hover{opacity:.85}
+
+.hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 28px;text-align:center;position:relative}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 40%,rgba(255,255,255,.04) 0%,transparent 70%);pointer-events:none}
+.hero-eyebrow{font-family:var(--mono);font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:28px}
+.hero-h1{font-size:clamp(2.8rem,9vw,5.5rem);font-weight:800;line-height:1;letter-spacing:-2px;margin-bottom:22px;color:var(--text)}
+.hero-h1 em{font-style:normal;color:var(--muted)}
+.hero-p{font-size:.9rem;color:var(--text2);line-height:1.8;max-width:360px;margin:0 auto 40px}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-hero-p{background:var(--text);color:#000;border:none;border-radius:var(--r2);padding:14px 36px;font-family:var(--font);font-size:.85rem;font-weight:700;cursor:pointer;transition:opacity .18s}
+.btn-hero-p:hover{opacity:.85}
+.btn-hero-s{background:none;color:var(--text2);border:1px solid var(--border2);border-radius:var(--r2);padding:14px 28px;font-family:var(--font);font-size:.85rem;font-weight:500;cursor:pointer;transition:all .18s}
+.btn-hero-s:hover{border-color:var(--text);color:var(--text)}
+
+.feat-bar{border-top:1px solid var(--border);display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.feat-bar::-webkit-scrollbar{display:none}
+.fi{flex:1;min-width:130px;padding:20px 16px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:5px}
+.fi:last-child{border-right:none}
+.fi-n{font-size:.72rem;font-weight:700;color:var(--text)}
+.fi-s{font-size:.6rem;color:var(--muted);font-family:var(--mono)}
+
+/* AUTH */
+.auth-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;min-height:100vh;background:var(--bg)}
+.auth-logo{font-size:1rem;font-weight:800;letter-spacing:-.5px;margin-bottom:4px}
+.auth-logo span{color:var(--muted)}
+.auth-tag{font-family:var(--mono);font-size:.58rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:36px}
+.auth-card{width:100%;max-width:380px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:28px 24px}
+.auth-sect{font-family:var(--mono);font-size:.58rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:22px}
+.fg{margin-bottom:14px}
+.fl{display:block;font-family:var(--mono);font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.fi2{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:11px 13px;color:var(--text);font-family:var(--mono);font-size:.8rem;outline:none;transition:border-color .15s;-webkit-appearance:none;caret-color:var(--text)}
+.fi2:focus{border-color:var(--border2)}
+.fi2::placeholder{color:var(--muted)}
+.fi2.big{letter-spacing:12px;font-size:1.6rem;text-align:center;padding:14px}
+.btn-full{width:100%;background:var(--text);color:#000;border:none;border-radius:var(--r);padding:12px;font-family:var(--font);font-size:.8rem;font-weight:700;cursor:pointer;transition:opacity .15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-full:hover{opacity:.85}
+.btn-full:disabled{opacity:.35;cursor:not-allowed}
+.btn-full.danger{background:var(--red);color:#fff}
+.btn-full.success{background:var(--green);color:#000}
+.msg-e{font-family:var(--mono);font-size:.65rem;color:var(--red);margin-top:6px;display:none}
+.msg-e.on{display:block}
+.msg-s{font-family:var(--mono);font-size:.65rem;color:var(--green);margin-top:6px;display:none}
+.msg-s.on{display:block}
+.auth-foot{margin-top:14px;text-align:center;font-family:var(--mono);font-size:.62rem;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+.auth-foot a{color:var(--text);cursor:pointer;text-decoration:none}
+
+/* SIDEBAR LAYOUT */
+#page-main{flex-direction:row;min-height:100vh}
+.sb{width:210px;min-width:210px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:40;transition:transform .22s cubic-bezier(.4,0,.2,1)}
+.sb-logo{padding:20px 16px 14px;border-bottom:1px solid var(--border);font-size:.88rem;font-weight:800;letter-spacing:-.5px}
+.sb-logo span{color:var(--muted)}
+.sb-nav{flex:1;padding:10px 8px;overflow-y:auto}
+.nav-s{font-family:var(--mono);font-size:.52rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);padding:8px 8px 5px}
+.ni{display:flex;align-items:center;gap:9px;padding:9px 8px;border-radius:var(--r);cursor:pointer;font-size:.76rem;font-weight:600;color:var(--text2);transition:all .13s;margin-bottom:1px;border:none;background:none;width:100%;text-align:left;font-family:var(--font)}
+.ni:hover{background:var(--bg3);color:var(--text)}
+.ni.act{background:var(--acc2);color:var(--text);border:1px solid var(--border2)}
+.ni-ico{font-size:.85rem;width:16px;text-align:center;flex-shrink:0}
+.sb-foot{padding:10px 8px;border-top:1px solid var(--border)}
+.sb-bal{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:12px;margin-bottom:8px}
+.sb-bal-l{font-family:var(--mono);font-size:.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.sb-bal-v{font-family:var(--mono);font-size:1.1rem;font-weight:600;color:var(--green)}
+.sb-prof{display:flex;align-items:center;gap:8px;padding:7px;border-radius:var(--r);cursor:pointer;transition:background .13s;border:none;background:none;width:100%;text-align:left}
+.sb-prof:hover{background:var(--bg3)}
+.sp-av{width:30px;height:30px;border-radius:50%;background:var(--bg4);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.72rem;font-weight:600;color:var(--text);flex-shrink:0}
+.sp-n{font-size:.74rem;font-weight:600;color:var(--text)}
+.sp-e{font-size:.58rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px;font-family:var(--mono)}
+
+/* TOPBAR */
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);height:50px;display:none;align-items:center;padding:0 14px;gap:10px;position:sticky;top:0;z-index:30}
+.tb-menu{background:none;border:1px solid var(--border);border-radius:var(--r);width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;color:var(--text)}
+.tb-logo{flex:1;font-size:.85rem;font-weight:800;letter-spacing:-.5px}
+.tb-logo span{color:var(--muted)}
+.tb-bal{font-family:var(--mono);font-size:.7rem;color:var(--muted);background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:5px 10px}
+.tb-bal b{color:var(--green)}
+
+/* MAIN AREA */
+.main-area{margin-left:210px;flex:1;min-height:100vh;display:flex;flex-direction:column}
+.content{flex:1;padding:22px;max-width:820px}
+.tc{display:none}
+.tc.active{display:block}
+
+.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px}
+.pt{font-size:1.1rem;font-weight:700;letter-spacing:-.3px}
+.ps{font-size:.68rem;color:var(--muted);margin-top:2px;font-family:var(--mono)}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:18px}
+.card-sm{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px}
+.ct{font-family:var(--mono);font-size:.52rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+
+/* DASHBOARD */
+.bal-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:26px;margin-bottom:14px}
+.bc-l{font-family:var(--mono);font-size:.52rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.bc-v{font-family:var(--mono);font-size:2.6rem;font-weight:700;color:var(--green);line-height:1;margin-bottom:5px}
+.bc-s{font-size:.65rem;color:var(--muted)}
+.bc-acts{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.g-btn{background:none;border:1px solid var(--border2);color:var(--text2);border-radius:var(--r);padding:8px 16px;font-family:var(--font);font-size:.72rem;font-weight:500;cursor:pointer;transition:all .13s;display:flex;align-items:center;gap:5px}
+.g-btn:hover{border-color:var(--text);color:var(--text)}
+.g-btn-sm{padding:6px 10px;font-size:.66rem}
+
+.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.sc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px}
+.sc-l{font-family:var(--mono);font-size:.52rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.sc-v{font-family:var(--mono);font-size:1rem;font-weight:600}
+.cv-g{color:var(--green)}.cv-r{color:var(--red)}.cv-w{color:var(--text)}
+
+.al{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+.al-i{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.al-i:last-child{border-bottom:none}
+.al-ic{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0}
+.al-ic.cr{background:rgba(76,175,80,.1);color:var(--green)}
+.al-ic.db{background:rgba(244,67,54,.1);color:var(--red)}
+.al-d{font-size:.7rem;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.al-t{font-size:.56rem;color:var(--muted);font-family:var(--mono);margin-top:1px}
+.al-a{font-family:var(--mono);font-size:.74rem;font-weight:600;white-space:nowrap}
+.al-a.cr{color:var(--green)}.al-a.db{color:var(--red)}
+.empty{padding:32px;text-align:center;color:var(--muted);font-size:.68rem;font-family:var(--mono)}
+.sh{font-family:var(--mono);font-size:.52rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin:18px 0 8px;display:flex;align-items:center;justify-content:space-between}
+
+/* BUY — MULTI-SERVER + MULTI-OTP */
+.buy-step{display:none}
+.buy-step.active{display:block}
+.svc-search{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);display:flex;align-items:center;gap:8px;padding:9px 12px;margin-bottom:10px;transition:border-color .13s}
+.svc-search:focus-within{border-color:var(--border2)}
+.svc-search input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:.78rem}
+.svc-search input::placeholder{color:var(--muted)}
+.svc-g{display:flex;flex-direction:column;gap:5px}
+.svc-i{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;cursor:pointer;transition:all .13s;display:flex;align-items:center;gap:10px}
+.svc-i:hover,.svc-i.sel{border-color:var(--border2);background:var(--acc2)}
+.svc-logo{width:36px;height:36px;border-radius:8px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;overflow:hidden}
+.svc-logo img{width:100%;height:100%;object-fit:cover;border-radius:7px}
+.svc-inf{flex:1;min-width:0}
+.svc-nm{font-size:.8rem;font-weight:700}
+.svc-pr{font-size:.62rem;color:var(--text2);font-family:var(--mono)}
+.chk{width:18px;height:18px;border:1px solid var(--border2);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.6rem;transition:all .13s}
+.svc-i.sel .chk{border-color:var(--text);background:var(--text);color:#000}
+
+/* Server chips */
+.srv-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.srv-chip{padding:7px 14px;border-radius:20px;border:1px solid var(--border);font-family:var(--mono);font-size:.66rem;cursor:pointer;color:var(--text2);background:var(--bg2);transition:all .13s}
+.srv-chip:hover,.srv-chip.sel{border-color:var(--text);color:var(--text);background:var(--acc2)}
+
+/* Active order box */
+.ord-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:12px;overflow:hidden}
+.ord-hdr{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.ord-num-big{font-family:var(--mono);font-size:1.4rem;font-weight:700;letter-spacing:2px}
+.ord-timer{font-family:var(--mono);font-size:.8rem;color:var(--amber);background:rgba(255,152,0,.08);padding:4px 10px;border-radius:var(--r)}
+.ord-body{padding:18px}
+
+/* OTP slots */
+.otp-slots{display:flex;flex-direction:column;gap:8px}
+.otp-slot{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.otp-slot.got{border-color:var(--green);background:rgba(76,175,80,.05)}
+.otp-slot.wait{border-color:var(--border)}
+.otp-slot-info{flex:1;min-width:0}
+.otp-slot-svc{font-size:.7rem;font-weight:700;margin-bottom:2px}
+.otp-slot-num{font-family:var(--mono);font-size:.72rem;color:var(--text2)}
+.otp-slot-code{font-family:var(--mono);font-size:1.3rem;font-weight:700;color:var(--green);letter-spacing:4px;cursor:pointer}
+.otp-slot-wait{font-family:var(--mono);font-size:.65rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+.otp-slot-sms{font-family:var(--mono);font-size:.6rem;color:var(--muted);margin-top:4px;word-break:break-all;line-height:1.5}
+.otp-slot-acts{display:flex;flex-direction:column;gap:6px;flex-shrink:0}
+.slot-cancel{background:none;border:1px solid var(--border);border-radius:var(--r);padding:5px 10px;font-family:var(--mono);font-size:.6rem;color:var(--red);cursor:pointer;transition:all .13s;white-space:nowrap}
+.slot-cancel:hover{border-color:var(--red)}
+.slot-copy{background:none;border:1px solid var(--border);border-radius:var(--r);padding:5px 10px;font-family:var(--mono);font-size:.6rem;color:var(--text2);cursor:pointer;transition:all .13s;white-space:nowrap}
+.slot-copy:hover{border-color:var(--text);color:var(--text)}
+
+.sbadge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-family:var(--mono);font-size:.56rem;letter-spacing:1px;text-transform:uppercase}
+.sbadge.pending{background:rgba(255,152,0,.08);color:var(--amber);border:1px solid rgba(255,152,0,.2)}
+.sbadge.success{background:rgba(76,175,80,.08);color:var(--green);border:1px solid rgba(76,175,80,.2)}
+.sbadge.expired{background:rgba(244,67,54,.08);color:var(--red);border:1px solid rgba(244,67,54,.2)}
+.sbadge.cancelled{background:rgba(85,85,85,.12);color:var(--muted);border:1px solid var(--border)}
+.pdot{width:5px;height:5px;border-radius:50%;background:currentColor;animation:blink 1.3s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+/* DEPOSIT (UPI + Redeem) */
+.dep-steps{display:flex;margin-bottom:20px;border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+.dep-step{flex:1;padding:12px 16px;font-family:var(--mono);font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);cursor:pointer;border-right:1px solid var(--border);transition:all .15s;text-align:center;background:none;border-bottom:none;border-top:none;font-family:var(--font);font-weight:600;font-size:.72rem}
+.dep-step:last-child{border-right:none}
+.dep-step.act{background:var(--acc2);color:var(--text)}
+.dep-view{display:none}
+.dep-view.act{display:block}
+
+/* UPI FLOW */
+.upi-step{display:none}
+.upi-step.active{display:block}
+.step-nav{display:flex;align-items:center;gap:8px;margin-bottom:20px;font-family:var(--mono);font-size:.6rem;color:var(--muted)}
+.step-num{width:20px;height:20px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.65rem}
+.step-num.act{background:var(--text);color:#000;border-color:var(--text)}
+.step-div{flex:1;height:1px;background:var(--border)}
+
+.upi-display{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:20px;text-align:center;margin-bottom:16px}
+.upi-id{font-family:var(--mono);font-size:1.1rem;font-weight:600;color:var(--text);margin:8px 0 4px;letter-spacing:.5px}
+.upi-hint{font-family:var(--mono);font-size:.58rem;color:var(--muted)}
+
+.amt-presets{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.amt-chip{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:9px 6px;font-family:var(--mono);font-size:.74rem;cursor:pointer;color:var(--text2);transition:all .13s;text-align:center}
+.amt-chip:hover,.amt-chip.sel{border-color:var(--text);color:var(--text);background:var(--acc2)}
+
+.qr-box{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:20px;text-align:center;margin-bottom:14px;display:none}
+.qr-img{width:180px;height:180px;margin:0 auto 12px;background:#fff;border-radius:var(--r);padding:8px;display:flex;align-items:center;justify-content:center}
+.qr-amt{font-family:var(--mono);font-size:1.2rem;font-weight:700;color:var(--green);margin-bottom:6px}
+.qr-hint{font-family:var(--mono);font-size:.58rem;color:var(--muted)}
+
+.up-zone{border:1px dashed var(--border2);border-radius:var(--r);padding:20px;text-align:center;cursor:pointer;transition:border-color .13s;position:relative}
+.up-zone:hover{border-color:var(--text)}
+.up-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.up-prev{width:100%;max-height:180px;object-fit:contain;border-radius:6px;display:none}
+
+/* REDEEM */
+.rdm-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:22px;text-align:center;margin-bottom:14px}
+.rdm-ico{font-size:2rem;margin-bottom:12px}
+.rdm-t{font-size:.85rem;font-weight:700;margin-bottom:6px}
+.rdm-s{font-size:.68rem;color:var(--muted);line-height:1.7;margin-bottom:16px}
+
+/* RECHARGE HIST */
+.rch-hist{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+.rch-i{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.rch-i:last-child{border-bottom:none}
+.ri-a{font-family:var(--mono);font-size:.82rem;font-weight:700}
+.ri-d{font-family:var(--mono);font-size:.56px;color:var(--muted);margin-top:2px}
+
+/* HISTORY */
+.filter-pills{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
+.pill{padding:5px 12px;border-radius:20px;border:1px solid var(--border);font-family:var(--mono);font-size:.6rem;letter-spacing:1px;cursor:pointer;color:var(--muted);background:none;transition:all .13s}
+.pill.act{border-color:var(--text);color:var(--text);background:var(--acc2)}
+.ord-list{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+.ord-i{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .1s}
+.ord-i:last-child{border-bottom:none}
+.ord-i:hover{background:var(--bg3)}
+.oi-svc{font-size:.76rem;font-weight:700}
+.oi-num{font-family:var(--mono);font-size:.64px;color:var(--muted);margin-top:2px}
+.oi-t{font-family:var(--mono);font-size:.56px;color:var(--muted);margin-top:2px}
+.oi-price{font-family:var(--mono);font-size:.7rem;color:var(--red);font-weight:600}
+.oi-otp{font-family:var(--mono);font-size:.78rem;color:var(--green);font-weight:700;letter-spacing:2px;margin-top:2px}
+
+/* TXN */
+.txn-list{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+.txn-i{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.txn-i:last-child{border-bottom:none}
+.txn-ic{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0}
+.txn-ic.cr{background:rgba(76,175,80,.1);color:var(--green)}
+.txn-ic.db{background:rgba(244,67,54,.1);color:var(--red)}
+.txn-desc{font-size:.7rem;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.txn-date{font-family:var(--mono);font-size:.56rem;color:var(--muted);margin-top:2px}
+.txn-a{font-family:var(--mono);font-size:.74rem;font-weight:600;white-space:nowrap}
+.txn-a.cr{color:var(--green)}.txn-a.db{color:var(--red)}
+
+/* PROFILE */
+.prof-h{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:26px;text-align:center;margin-bottom:14px}
+.prof-av{width:64px;height:64px;border-radius:50%;background:var(--bg4);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:1.4rem;font-weight:700;color:var(--text);margin:0 auto 12px}
+.prof-nm{font-size:.95rem;font-weight:700}
+.prof-em{font-family:var(--mono);font-size:.64rem;color:var(--muted);margin-top:3px}
+.info-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:12px}
+.ic-row{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.ic-row:last-child{border-bottom:none}
+.ic-l{font-family:var(--mono);font-size:.52rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.ic-v{font-size:.74rem;color:var(--text2);text-align:right;max-width:200px;word-break:break-all}
+
+/* REFER */
+.refer-code-box{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:14px;display:flex;align-items:center;justify-content:space-between;margin-top:12px}
+.rc-code{font-family:var(--mono);font-size:1.1rem;font-weight:700;letter-spacing:4px;color:var(--text)}
+
+/* MODAL */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;align-items:flex-end;justify-content:center}
+.modal-ov.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2) var(--r2) 0 0;width:100%;max-width:480px;max-height:88vh;display:flex;flex-direction:column;animation:sup .2s ease}
+@keyframes sup{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-hd{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-title{font-family:var(--mono);font-size:.62rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text2)}
+.modal-close{background:none;border:1px solid var(--border);border-radius:var(--r);color:var(--muted);cursor:pointer;font-size:.9rem;width:26px;height:26px;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{color:var(--text);border-color:var(--border2)}
+.modal-body{padding:16px;flex:1;overflow-y:auto}
+.modal-foot{padding:12px 16px;border-top:1px solid var(--border);flex-shrink:0;display:flex;gap:8px}
+
+/* SB OVERLAY */
+.sb-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:39}
+.sb-ov.open{display:block}
+
+/* TOAST */
+.toast-w{position:fixed;bottom:18px;right:18px;z-index:999;display:flex;flex-direction:column;gap:5px;pointer-events:none}
+.toast{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:9px 14px;font-size:.68rem;font-family:var(--mono);white-space:nowrap;animation:tin .16s ease;display:flex;align-items:center;gap:6px}
+@keyframes tin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.toast.ok{border-color:rgba(76,175,80,.3);color:var(--green)}
+.toast.err{border-color:rgba(244,67,54,.3);color:var(--red)}
+.toast.info{border-color:rgba(255,255,255,.15);color:var(--text2)}
+
+/* MISC */
+.spin{display:inline-block;width:13px;height:13px;border:1.5px solid var(--border2);border-top-color:var(--text);border-radius:50%;animation:rot .6s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+.ld{text-align:center;padding:32px;color:var(--muted);font-size:.68rem;font-family:var(--mono)}
+.ld .spin{margin:0 auto 10px;display:block;width:18px;height:18px}
+.wait-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 0;font-family:var(--mono);font-size:.66rem;color:var(--muted)}
+.wait-dots::after{content:'..';animation:dd 1.2s infinite}
+@keyframes dd{0%{content:'.'}33%{content:'..'}66%{content:'...'}100%{content:'.'}}
+
+@media(max-width:700px){
+  .sb{transform:translateX(-100%)}
+  .sb.open{transform:translateX(0)}
+  .main-area{margin-left:0}
+  .topbar{display:flex}
+  .content{padding:14px}
+  .sg{grid-template-columns:1fr 1fr;gap:6px}
+  .toast-w{bottom:14px;right:10px;left:10px;align-items:center}
+  .toast{white-space:normal;text-align:center}
+}
+@media(max-width:360px){
+  .sg{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- LANDING -->
+<div class="page active" id="page-landing">
+  <div class="l-wrap">
+    <nav class="l-nav">
+      <div class="logo">Sasta<span>OTP</span></div>
+      <div class="l-nav-r">
+        <button class="btn-ghost" onclick="showPage('page-login')">Sign In</button>
+        <button class="btn-wh" onclick="showPage('page-signup')">Get Started</button>
+      </div>
+    </nav>
+    <div class="hero">
+      <div class="hero-eyebrow">Instant Virtual Numbers</div>
+      <h1 class="hero-h1">OTP for<br><em>any</em> service</h1>
+      <p class="hero-p">Virtual numbers across 200+ services. Instant delivery, auto-refund if no OTP arrives.</p>
+      <div class="hero-btns">
+        <button class="btn-hero-p" onclick="showPage('page-signup')">Get Started →</button>
+        <button class="btn-hero-s" onclick="showPage('page-login')">Sign In</button>
+      </div>
+    </div>
+    <div class="feat-bar">
+      <div class="fi"><div class="fi-n">Instant</div><div class="fi-s">&lt;30 sec</div></div>
+      <div class="fi"><div class="fi-n">Auto Refund</div><div class="fi-s">No OTP = refund</div></div>
+      <div class="fi"><div class="fi-n">200+ Services</div><div class="fi-s">All platforms</div></div>
+      <div class="fi"><div class="fi-n">Multi OTP</div><div class="fi-s">Up to 5 at once</div></div>
+      <div class="fi"><div class="fi-n">7 Servers</div><div class="fi-s">38 databases</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div class="page" id="page-login">
+  <div class="auth-wrap">
+    <div class="auth-logo">Sasta<span>OTP</span></div>
+    <div class="auth-tag">Sign In</div>
+    <div class="auth-card">
+      <div class="auth-sect">Account Access</div>
+      <div class="fg"><label class="fl">Email</label><input class="fi2" id="li-email" type="email" placeholder="you@example.com" autocomplete="email"></div>
+      <div class="fg"><label class="fl">Password</label><input class="fi2" id="li-pass" type="password" placeholder="••••••••" autocomplete="current-password"></div>
+      <div class="msg-e" id="li-err"></div><br>
+      <button class="btn-full" id="li-btn" onclick="doLogin()"><span id="li-txt">Sign In</span></button>
+    </div>
+    <div class="auth-foot">
+      <a onclick="showPage('page-forgot')">Forgot password?</a>
+      <span style="color:var(--border2)">·</span>
+      <a onclick="showPage('page-signup')">Create account</a>
+      <span style="color:var(--border2)">·</span>
+      <a onclick="showPage('page-landing')">← Home</a>
+    </div>
+  </div>
+</div>
+
+<!-- SIGNUP -->
+<div class="page" id="page-signup">
+  <div class="auth-wrap">
+    <div class="auth-logo">Sasta<span>OTP</span></div>
+    <div class="auth-tag">Create Account</div>
+    <div class="auth-card">
+      <div id="su-s1">
+        <div class="auth-sect">Register</div>
+        <div class="fg"><label class="fl">Full Name</label><input class="fi2" id="su-name" type="text" placeholder="Your name"></div>
+        <div class="fg"><label class="fl">Email</label><input class="fi2" id="su-email" type="email" placeholder="you@example.com"></div>
+        <div class="fg"><label class="fl">Password</label><input class="fi2" id="su-pass" type="password" placeholder="Min 6 characters"></div>
+        <div class="fg"><label class="fl">Referral Code <span style="color:var(--muted)">(optional)</span></label><input class="fi2" id="su-ref" type="text" placeholder="XXXXXXXX" style="text-transform:uppercase"></div>
+        <div class="msg-e" id="su-err"></div><br>
+        <button class="btn-full" id="su-btn" onclick="doSendOtp()"><span id="su-txt">Send OTP</span></button>
+      </div>
+      <div id="su-s2" style="display:none">
+        <div class="auth-sect">Verify Email</div>
+        <p style="font-family:var(--mono);font-size:.66rem;color:var(--muted);margin-bottom:16px">OTP sent to <b style="color:var(--text)" id="su-email-show"></b></p>
+        <div class="fg"><label class="fl">6-Digit OTP</label><input class="fi2 big" id="su-otp" type="number" placeholder="000000"></div>
+        <div class="msg-e" id="su-otp-err"></div><br>
+        <button class="btn-full" id="su-otp-btn" onclick="doSignup()"><span id="su-otp-txt">Create Account</span></button>
+        <div style="text-align:center;margin-top:12px"><a style="font-family:var(--mono);font-size:.64rem;color:var(--text2);cursor:pointer" onclick="resendOtp('signup')">Resend OTP</a></div>
+      </div>
+    </div>
+    <div class="auth-foot"><a onclick="showPage('page-login')">← Back to Login</a></div>
+  </div>
+</div>
+
+<!-- FORGOT -->
+<div class="page" id="page-forgot">
+  <div class="auth-wrap">
+    <div class="auth-logo">Sasta<span>OTP</span></div>
+    <div class="auth-tag">Reset Password</div>
+    <div class="auth-card">
+      <div id="fp-s1">
+        <div class="auth-sect">Forgot Password</div>
+        <div class="fg"><label class="fl">Email</label><input class="fi2" id="fp-email" type="email" placeholder="you@example.com"></div>
+        <div class="msg-e" id="fp-err"></div><div class="msg-s" id="fp-ok"></div><br>
+        <button class="btn-full" id="fp-btn" onclick="doForgot()"><span id="fp-txt">Send Reset OTP</span></button>
+      </div>
+      <div id="fp-s2" style="display:none">
+        <div class="auth-sect">New Password</div>
+        <div class="fg"><label class="fl">OTP Code</label><input class="fi2 big" id="fp-otp" type="number" placeholder="000000"></div>
+        <div class="fg"><label class="fl">New Password</label><input class="fi2" id="fp-newpass" type="password" placeholder="Min 6 characters"></div>
+        <div class="msg-e" id="fp-otp-err"></div><br>
+        <button class="btn-full" id="fp-rst-btn" onclick="doReset()"><span id="fp-rst-txt">Reset Password</span></button>
+      </div>
+    </div>
+    <div class="auth-foot"><a onclick="showPage('page-login')">← Back to Login</a></div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="page" id="page-main">
+  <div class="sb-ov" id="sb-ov" onclick="closeSb()"></div>
+
+  <aside class="sb" id="sb">
+    <div class="sb-logo">Sasta<span>OTP</span></div>
+    <nav class="sb-nav">
+      <div class="nav-s">Menu</div>
+      <button class="ni act" id="ni-dashboard" onclick="tab('dashboard')"><span class="ni-ico">⊞</span> Dashboard</button>
+      <button class="ni" id="ni-buy" onclick="tab('buy')"><span class="ni-ico">⚡</span> Buy Number</button>
+      <button class="ni" id="ni-deposit" onclick="tab('deposit')"><span class="ni-ico">◈</span> Deposit</button>
+      <button class="ni" id="ni-numhist" onclick="tab('numhist')"><span class="ni-ico">◉</span> Number History</button>
+      <button class="ni" id="ni-txns" onclick="tab('txns')"><span class="ni-ico">↕</span> Transactions</button>
+      <div class="nav-s" style="margin-top:6px">More</div>
+      <button class="ni" id="ni-refer" onclick="tab('refer')"><span class="ni-ico">★</span> Refer & Earn</button>
+      <button class="ni" id="ni-telegram" onclick="tab('telegram')"><span class="ni-ico">✈</span> Telegram</button>
+      <button class="ni" id="ni-apply" onclick="tab('apply')"><span class="ni-ico">+</span> Apply Service</button>
+    </nav>
+    <div class="sb-foot">
+      <div class="sb-bal">
+        <div class="sb-bal-l">Wallet</div>
+        <div class="sb-bal-v">₹<span id="sb-balance">0.00</span></div>
+      </div>
+      <button class="sb-prof" onclick="tab('profile')">
+        <div class="sp-av" id="sb-avatar">?</div>
+        <div>
+          <div class="sp-n" id="sb-name">—</div>
+          <div class="sp-e" id="sb-email">—</div>
+        </div>
+      </button>
+    </div>
+  </aside>
+
+  <div class="topbar">
+    <button class="tb-menu" onclick="openSb()">☰</button>
+    <div class="tb-logo">Sasta<span>OTP</span></div>
+    <div class="tb-bal">₹<b id="tb-balance">0.00</b></div>
+    <button class="tb-menu" onclick="tab('profile')" style="margin-left:4px">○</button>
+  </div>
+
+  <div class="main-area">
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div class="tc active" id="tab-dashboard">
+        <div class="ph"><div><div class="pt">Dashboard</div><div class="ps">Overview</div></div></div>
+        <div class="bal-card">
+          <div class="bc-l">Wallet Balance</div>
+          <div class="bc-v">₹<span id="home-balance">0.00</span></div>
+          <div class="bc-s">Available for OTP purchases</div>
+          <div class="bc-acts">
+            <button class="g-btn" onclick="tab('deposit')">⊕ Deposit</button>
+            <button class="g-btn" onclick="tab('buy')">⚡ Buy Number</button>
+          </div>
+        </div>
+        <div class="sg">
+          <div class="sc"><div class="sc-l">Total Spent</div><div class="sc-v cv-r" id="home-spent">₹0</div></div>
+          <div class="sc"><div class="sc-l">OTPs Bought</div><div class="sc-v cv-w" id="home-otps">0</div></div>
+          <div class="sc"><div class="sc-l">Success Rate</div><div class="sc-v cv-g" id="home-rate">—</div></div>
+        </div>
+        <div class="sh">Recent Activity</div>
+        <div class="al" id="home-txns"><div class="empty">No activity yet</div></div>
+      </div>
+
+      <!-- BUY NUMBER -->
+      <div class="tc" id="tab-buy">
+        <div class="ph"><div><div class="pt">Buy Number</div><div class="ps">Service → Server → OTP</div></div></div>
+
+        <!-- Step 1: Service -->
+        <div class="buy-step active" id="bs1">
+          <div class="sh" style="margin-top:0">Choose Service</div>
+          <div class="svc-search">
+            <span style="color:var(--muted)">⌕</span>
+            <input placeholder="Search services..." id="svc-search" oninput="filterSvcs(this.value)">
+          </div>
+          <div id="svc-loading" class="ld"><div class="spin"></div>Loading...</div>
+          <div class="svc-g" id="svc-list"></div>
+          <div id="svc-empty" class="empty" style="display:none">No services found</div>
+        </div>
+
+        <!-- Step 2: Server -->
+        <div class="buy-step" id="bs2">
+          <button class="g-btn g-btn-sm" style="margin-bottom:14px" onclick="showBS(1)">← Back</button>
+          <div class="sh" style="margin-top:0">Select Server for <span id="srv-svc-nm" style="color:var(--text)">—</span></div>
+          <div id="srv-loading" class="ld"><div class="spin"></div>Loading servers...</div>
+          <div class="srv-chips" id="srv-chips"></div>
+          <br>
+          <div id="slot-count-wrap" style="display:none;margin-bottom:12px">
+            <div class="sh" style="margin-top:0">How many OTPs? <span style="color:var(--muted)">(max 5)</span></div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap" id="slot-count-chips"></div>
+          </div>
+          <button class="btn-full" id="srv-next-btn" style="display:none" onclick="showBS(3)">Continue →</button>
+        </div>
+
+        <!-- Step 3: Confirm -->
+        <div class="buy-step" id="bs3">
+          <button class="g-btn g-btn-sm" style="margin-bottom:14px" onclick="showBS(2)">← Back</button>
+          <div class="sh" style="margin-top:0">Order Summary</div>
+          <div class="card" style="margin-bottom:12px">
+            <div class="ic-row"><span class="ic-l">Service</span><span id="cf-svc" style="font-size:.8rem;font-weight:700">—</span></div>
+            <div class="ic-row"><span class="ic-l">Server</span><span id="cf-srv" style="font-family:var(--mono);font-size:.76rem;color:var(--text2)">—</span></div>
+            <div class="ic-row"><span class="ic-l">OTP Slots</span><span id="cf-slots" style="font-family:var(--mono);font-size:.76rem;color:var(--text2)">—</span></div>
+            <div class="ic-row"><span class="ic-l">Price Each</span><span id="cf-price" style="font-family:var(--mono);font-size:.9rem;font-weight:700;color:var(--green)">₹0</span></div>
+            <div class="ic-row"><span class="ic-l">Total</span><span id="cf-total" style="font-family:var(--mono);font-size:.9rem;font-weight:700;color:var(--green)">₹0</span></div>
+            <div class="ic-row"><span class="ic-l">Your Balance</span><span id="cf-bal" style="font-family:var(--mono);font-size:.76rem">₹0</span></div>
+          </div>
+          <div class="msg-e on" id="cf-warn" style="margin-bottom:8px;display:none">⚠ Insufficient balance.</div>
+          <button class="btn-full success" id="cf-buy-btn" onclick="doCreateOrders()"><span id="cf-buy-txt">✓ Confirm & Get Numbers</span></button>
+        </div>
+
+        <!-- Step 4: Active Orders -->
+        <div class="buy-step" id="bs4">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+            <button class="g-btn g-btn-sm" onclick="resetBuy()">⊕ New Order</button>
+            <div id="bs4-overall-badge"></div>
+          </div>
+          <div class="ord-box">
+            <div class="ord-hdr">
+              <div>
+                <div style="font-family:var(--mono);font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px" id="ord-svc-nm">—</div>
+                <div class="ord-num-big" id="ord-main-num">Waiting...</div>
+              </div>
+              <div class="ord-timer" id="ord-timer">10:00</div>
+            </div>
+            <div class="ord-body">
+              <div class="otp-slots" id="otp-slots-wrap"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEPOSIT -->
+      <div class="tc" id="tab-deposit">
+        <div class="ph"><div><div class="pt">Deposit</div><div class="ps">Add funds to wallet</div></div></div>
+
+        <div class="dep-steps">
+          <button class="dep-step act" id="dep-tab-upi" onclick="switchDep('upi')">UPI Payment</button>
+          <button class="dep-step" id="dep-tab-redeem" onclick="switchDep('redeem')">Redeem Code</button>
+        </div>
+
+        <!-- UPI VIEW -->
+        <div class="dep-view act" id="dep-upi">
+          <!-- UPI Step 1: Enter Amount -->
+          <div class="upi-step active" id="us1">
+            <div class="step-nav">
+              <div class="step-num act">1</div>
+              <div class="step-div"></div>
+              <div class="step-num">2</div>
+              <div class="step-div"></div>
+              <div class="step-num">3</div>
+            </div>
+            <div class="sh" style="margin-top:0">Enter Amount</div>
+            <div class="amt-presets">
+              <div class="amt-chip" onclick="setAmt(50,this)">₹50</div>
+              <div class="amt-chip" onclick="setAmt(100,this)">₹100</div>
+              <div class="amt-chip" onclick="setAmt(200,this)">₹200</div>
+              <div class="amt-chip" onclick="setAmt(500,this)">₹500</div>
+            </div>
+            <div class="fg"><label class="fl">Custom Amount (₹)</label><input class="fi2" id="rch-amt" type="number" placeholder="Min ₹10" oninput="clearAmtChips()"></div>
+            <div class="msg-e" id="us1-err"></div><br>
+            <button class="btn-full" onclick="goUs2()">Next → Show UPI ID</button>
+          </div>
+
+          <!-- UPI Step 2: Pay -->
+          <div class="upi-step" id="us2">
+            <div class="step-nav">
+              <div class="step-num act">1</div>
+              <div class="step-div"></div>
+              <div class="step-num act">2</div>
+              <div class="step-div"></div>
+              <div class="step-num">3</div>
+            </div>
+            <div class="sh" style="margin-top:0">Pay via UPI</div>
+            <div class="upi-display" onclick="copyUpi()" style="cursor:pointer">
+              <div class="ct">UPI ID (tap to copy)</div>
+              <div class="upi-id" id="upi-val">loading...</div>
+              <div class="upi-hint">Tap to copy</div>
+            </div>
+            <div class="qr-box" id="qr-box">
+              <div class="qr-amt" id="qr-amt-lbl">₹0</div>
+              <div class="qr-img" id="qr-container"></div>
+              <div class="qr-hint">Scan with any UPI app</div>
+            </div>
+            <div style="display:flex;gap:8px;margin-bottom:14px">
+              <button class="g-btn" onclick="goUs1()">← Back</button>
+              <button class="g-btn" style="flex:1" onclick="goUs3()">I've Paid → Upload Screenshot</button>
+            </div>
+          </div>
+
+          <!-- UPI Step 3: Upload -->
+          <div class="upi-step" id="us3">
+            <div class="step-nav">
+              <div class="step-num act">1</div>
+              <div class="step-div"></div>
+              <div class="step-num act">2</div>
+              <div class="step-div"></div>
+              <div class="step-num act">3</div>
+            </div>
+            <div class="sh" style="margin-top:0">Upload Screenshot</div>
+            <div class="fg">
+              <div class="up-zone" id="upload-zone">
+                <input type="file" accept="image/*" onchange="onScreenshot(this)">
+                <img class="up-prev" id="upload-prev">
+                <div id="upload-hint">
+                  <div style="font-size:1.2rem;margin-bottom:6px;pointer-events:none">↑</div>
+                  <div style="font-size:.7rem;color:var(--muted);pointer-events:none">Tap to upload payment screenshot</div>
+                </div>
+              </div>
+            </div>
+            <div class="msg-e" id="rch-err"></div><br>
+            <div style="display:flex;gap:8px">
+              <button class="g-btn" onclick="goUs2()">← Back</button>
+              <button class="btn-full" id="rch-btn" onclick="doRecharge()" style="flex:1"><span id="rch-txt">Submit Request</span></button>
+            </div>
+          </div>
+
+          <div class="sh" style="margin-top:24px">Recharge History</div>
+          <div class="rch-hist" id="rch-hist"><div class="empty">No recharge requests</div></div>
+        </div>
+
+        <!-- REDEEM VIEW -->
+        <div class="dep-view" id="dep-redeem">
+          <div class="rdm-card">
+            <div class="rdm-ico">🎫</div>
+            <div class="rdm-t">Redeem Code</div>
+            <div class="rdm-s">Enter a valid redeem code to instantly credit your wallet. Codes are single-use and non-transferable.</div>
+          </div>
+          <div class="fg"><label class="fl">Redeem Code</label><input class="fi2" id="rdm-code" type="text" placeholder="XXXX-XXXX-XXXX" style="text-transform:uppercase;letter-spacing:2px"></div>
+          <div class="msg-e" id="rdm-err"></div>
+          <div class="msg-s" id="rdm-ok"></div><br>
+          <button class="btn-full" id="rdm-btn" onclick="doRedeem()"><span id="rdm-txt">Redeem Now</span></button>
+        </div>
+      </div>
+
+      <!-- NUMBER HISTORY -->
+      <div class="tc" id="tab-numhist">
+        <div class="ph"><div><div class="pt">Number History</div><div class="ps">All OTP orders</div></div></div>
+        <div class="filter-pills">
+          <button class="pill act" onclick="filterOrders('all',this)">All</button>
+          <button class="pill" onclick="filterOrders('pending',this)">Pending</button>
+          <button class="pill" onclick="filterOrders('success',this)">Success</button>
+          <button class="pill" onclick="filterOrders('cancelled',this)">Cancelled</button>
+          <button class="pill" onclick="filterOrders('expired',this)">Expired</button>
+        </div>
+        <div id="ord-loading" class="ld"><div class="spin"></div>Loading...</div>
+        <div class="ord-list" id="ord-list" style="display:none"></div>
+      </div>
+
+      <!-- TRANSACTIONS -->
+      <div class="tc" id="tab-txns">
+        <div class="ph"><div><div class="pt">Transactions</div><div class="ps">Wallet history</div></div></div>
+        <div id="txn-loading" class="ld"><div class="spin"></div>Loading...</div>
+        <div class="txn-list" id="txn-list" style="display:none"></div>
+        <div style="text-align:center;margin-top:10px">
+          <button class="g-btn" onclick="loadMoreTxns()">Load More</button>
+        </div>
+      </div>
+
+      <!-- REFER -->
+      <div class="tc" id="tab-refer">
+        <div class="ph"><div><div class="pt">Refer & Earn</div><div class="ps">Share code, earn rewards</div></div></div>
+        <div class="card" style="text-align:center;padding:26px;margin-bottom:12px">
+          <div style="font-size:2rem;margin-bottom:12px">🎁</div>
+          <div style="font-size:.9rem;font-weight:700;margin-bottom:8px">Earn ₹<span id="refer-reward">10</span> per referral</div>
+          <div style="font-size:.7rem;color:var(--muted);line-height:1.8;margin-bottom:18px">When your friend signs up with your code and recharges, you both get rewarded.</div>
+          <div class="refer-code-box">
+            <div>
+              <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Referral Code</div>
+              <div class="rc-code" id="refer-code">——</div>
+            </div>
+            <button class="g-btn" onclick="copyReferCode()">Copy</button>
+          </div>
+          <div style="margin-top:10px;font-family:var(--mono);font-size:.62rem;color:var(--muted)">Total referred: <b style="color:var(--text2)" id="total-referred">0</b></div>
+        </div>
+        <div class="info-card">
+          <div class="ic-row"><span class="ic-l">Reward per referral</span><span class="ic-v cv-g">₹<span id="r2">10</span></span></div>
+          <div class="ic-row"><span class="ic-l">Total earned</span><span class="ic-v">₹<span id="refer-earned">0</span></span></div>
+          <div class="ic-row"><span class="ic-l">Friends referred</span><span class="ic-v" id="r-count">0</span></div>
+        </div>
+      </div>
+
+      <!-- TELEGRAM -->
+      <div class="tc" id="tab-telegram">
+        <div class="ph"><div><div class="pt">Telegram Channel</div></div></div>
+        <div class="card" style="text-align:center;padding:28px;margin-bottom:12px">
+          <div style="font-size:1.8rem;margin-bottom:12px">✈</div>
+          <div style="font-size:.85rem;font-weight:700;margin-bottom:8px">Join Our Channel</div>
+          <div style="font-size:.7rem;color:var(--muted);line-height:1.8;margin-bottom:18px">Get updates on new services, downtime alerts, promo codes and support.</div>
+          <button class="btn-full" style="max-width:200px;margin:0 auto" onclick="window.open('https://t.me/sastaotphub','_blank')">Join Channel →</button>
+        </div>
+        <div class="card-sm">
+          <div class="ct">What you get</div>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:.74rem;color:var(--text2)">
+            <div>⚡ New service announcements</div>
+            <div>🔔 Promo codes and discounts</div>
+            <div>🛠 Service status alerts</div>
+            <div>💬 Community support</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- APPLY SERVICE -->
+      <div class="tc" id="tab-apply">
+        <div class="ph"><div><div class="pt">Apply New Service</div><div class="ps">Request unlisted service</div></div></div>
+        <div class="card">
+          <div class="ct">Service Request</div>
+          <div class="fg"><label class="fl">Service / App Name</label><input class="fi2" id="apply-name" placeholder="e.g. Groww, Zepto..."></div>
+          <div class="fg"><label class="fl">Website / App URL</label><input class="fi2" id="apply-url" type="url" placeholder="https://..."></div>
+          <div class="fg">
+            <label class="fl">Description</label>
+            <textarea class="fi2" id="apply-desc" rows="3" placeholder="What is this service? Why do you need OTPs?" style="resize:vertical"></textarea>
+          </div>
+          <div class="msg-e" id="apply-err"></div><div class="msg-s" id="apply-ok"></div><br>
+          <button class="btn-full" id="apply-btn" onclick="doApply()"><span id="apply-txt">Submit Request</span></button>
+        </div>
+      </div>
+
+      <!-- PROFILE -->
+      <div class="tc" id="tab-profile">
+        <div class="ph"><div><div class="pt">Profile</div></div></div>
+        <div class="prof-h">
+          <div class="prof-av" id="prof-av">?</div>
+          <div class="prof-nm" id="prof-nm">—</div>
+          <div class="prof-em" id="prof-em">—</div>
+        </div>
+        <div class="info-card">
+          <div class="ic-row"><span class="ic-l">Name</span><span class="ic-v" id="pf-name">—</span></div>
+          <div class="ic-row"><span class="ic-l">Email</span><span class="ic-v" id="pf-email">—</span></div>
+          <div class="ic-row"><span class="ic-l">Member Since</span><span class="ic-v" id="pf-since">—</span></div>
+          <div class="ic-row"><span class="ic-l">Balance</span><span class="ic-v cv-g">₹<span id="pf-bal">0</span></span></div>
+          <div class="ic-row"><span class="ic-l">Total Orders</span><span class="ic-v" id="pf-orders">0</span></div>
+        </div>
+        <br>
+        <button class="btn-full danger" style="width:auto;padding:11px 28px;margin:0 auto;display:flex" onclick="doLogout()">Sign Out</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Order Detail -->
+<div class="modal-ov" id="modal-order">
+  <div class="modal">
+    <div class="modal-hd"><span class="modal-title">Order Detail</span><button class="modal-close" onclick="closeModal('modal-order')">✕</button></div>
+    <div class="modal-body" id="modal-order-body">Loading...</div>
+    <div class="modal-foot"><button class="g-btn" onclick="closeModal('modal-order')">Close</button></div>
+  </div>
+</div>
+
+<div class="toast-w" id="toast-w"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+const API = 'https://flash-otp-hub.onrender.com';
+let token = localStorage.getItem('foh_token') || '';
+let user = null;
+let allSvcs = [];
+let selSvc = null;
+let selServer = null;
+let slotCount = 1;
+let activeOrders = []; // [{order_id, number, service, price, status, otp, sms, pollTimer, countdown}]
+let globalCountdown = null;
+let allOrders = [];
+let orderFilter = 'all';
+let upiId = '';
+let txnPage = 1;
+let ssFile = null;
+
+// ── Page nav ──
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function openSb(){document.getElementById('sb').classList.add('open');document.getElementById('sb-ov').classList.add('open');}
+function closeSb(){document.getElementById('sb').classList.remove('open');document.getElementById('sb-ov').classList.remove('open');}
+
+const TABS=['dashboard','buy','deposit','numhist','txns','refer','telegram','apply','profile'];
+function tab(t){
+  TABS.forEach(x=>{
+    const c=document.getElementById('tab-'+x),n=document.getElementById('ni-'+x);
+    if(c) c.classList.toggle('active',x===t);
+    if(n) n.classList.toggle('act',x===t);
+  });
+  closeSb();
+  if(t==='dashboard') loadHome();
+  if(t==='deposit'){loadUpiId();loadRchHist();}
+  if(t==='numhist') loadOrders();
+  if(t==='txns') loadTxns(1);
+  if(t==='refer') loadRefer();
+  if(t==='profile') loadProfile();
+}
+
+// ── API ──
+async function api(method,path,body){
+  const o={method,headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}};
+  if(body) o.body=JSON.stringify(body);
+  const r=await fetch(API+path,o);
+  const d=await r.json();
+  if(!r.ok) throw new Error(d.error||d.message||'Error');
+  return d;
+}
+async function apiForm(path,form){
+  const r=await fetch(API+path,{method:'POST',headers:{'Authorization':'Bearer '+token},body:form});
+  const d=await r.json();
+  if(!r.ok) throw new Error(d.error||d.message||'Error');
+  return d;
+}
+
+// ── Toast ──
+function toast(msg,type='ok'){
+  const w=document.getElementById('toast-w');
+  const el=document.createElement('div');
+  el.className='toast '+type;
+  el.textContent=msg;
+  w.appendChild(el);
+  setTimeout(()=>el.remove(),2600);
+}
+
+// ── Button load ──
+function btnLoad(tid,bid,loading,label=''){
+  const t=document.getElementById(tid),b=document.getElementById(bid);
+  if(!t||!b)return;
+  b.disabled=loading;
+  t.innerHTML=loading?'<span class="spin"></span>':label;
+}
+
+// ── Init ──
+async function initApp(){
+  if(!token){showPage('page-landing');return;}
+  try{
+    const d=await api('GET','/api/user/profile');
+    user=d;onLogin();
+  }catch{localStorage.removeItem('foh_token');token='';showPage('page-landing');}
+}
+
+function onLogin(){
+  updBal();showPage('page-main');loadHome();loadUpiId();loadSvcs();
+}
+
+function updBal(){
+  if(!user)return;
+  const b=parseFloat(user.wallet_balance||0).toFixed(2);
+  ['sb-balance','tb-balance','home-balance','pf-bal'].forEach(id=>{
+    const e=document.getElementById(id);if(e) e.textContent=b;
+  });
+}
+
+// ── AUTH ──
+async function doLogin(){
+  const email=document.getElementById('li-email').value.trim();
+  const pass=document.getElementById('li-pass').value;
+  const err=document.getElementById('li-err');
+  err.classList.remove('on');
+  if(!email||!pass){err.textContent='Fill all fields';err.classList.add('on');return;}
+  btnLoad('li-txt','li-btn',true);
+  try{
+    const d=await fetch(API+'/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})}).then(r=>r.json());
+    if(d.error){err.textContent=d.error;err.classList.add('on');return;}
+    token=d.access_token;localStorage.setItem('foh_token',token);user=d.user;onLogin();
+  }catch{err.textContent='Connection error';err.classList.add('on');}
+  finally{btnLoad('li-txt','li-btn',false,'Sign In');}
+}
+
+let suEmail='';
+async function doSendOtp(){
+  const name=document.getElementById('su-name').value.trim();
+  const email=document.getElementById('su-email').value.trim();
+  const pass=document.getElementById('su-pass').value;
+  const err=document.getElementById('su-err');
+  err.classList.remove('on');
+  if(!name||!email||!pass){err.textContent='Fill all fields';err.classList.add('on');return;}
+  if(pass.length<6){err.textContent='Password min 6 chars';err.classList.add('on');return;}
+  btnLoad('su-txt','su-btn',true);
+  try{
+    const d=await fetch(API+'/api/auth/send-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,purpose:'signup'})}).then(r=>r.json());
+    if(d.error){err.textContent=d.error;err.classList.add('on');return;}
+    suEmail=email;
+    document.getElementById('su-email-show').textContent=email;
+    document.getElementById('su-s1').style.display='none';
+    document.getElementById('su-s2').style.display='';
+    toast('OTP sent to '+email,'info');
+  }catch{err.textContent='Connection error';err.classList.add('on');}
+  finally{btnLoad('su-txt','su-btn',false,'Send OTP');}
+}
+
+async function doSignup(){
+  const otp=document.getElementById('su-otp').value.trim();
+  const name=document.getElementById('su-name').value.trim();
+  const pass=document.getElementById('su-pass').value;
+  const ref=(document.getElementById('su-ref').value||'').trim().toUpperCase();
+  const err=document.getElementById('su-otp-err');err.classList.remove('on');
+  btnLoad('su-otp-txt','su-otp-btn',true);
+  try{
+    const d=await fetch(API+'/api/auth/signup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email:suEmail,password:pass,otp,refer_code:ref||undefined})}).then(r=>r.json());
+    if(d.error){err.textContent=d.error;err.classList.add('on');return;}
+    token=d.access_token;localStorage.setItem('foh_token',token);user=d.user;onLogin();toast('Account created!');
+  }catch{err.textContent='Error';err.classList.add('on');}
+  finally{btnLoad('su-otp-txt','su-otp-btn',false,'Create Account');}
+}
+
+let fpEmail='';
+async function doForgot(){
+  const email=document.getElementById('fp-email').value.trim();
+  const err=document.getElementById('fp-err'),ok=document.getElementById('fp-ok');
+  err.classList.remove('on');ok.classList.remove('on');
+  btnLoad('fp-txt','fp-btn',true);
+  try{
+    const d=await fetch(API+'/api/auth/forgot-password',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})}).then(r=>r.json());
+    if(d.error){err.textContent=d.error;err.classList.add('on');return;}
+    fpEmail=email;ok.textContent='OTP sent!';ok.classList.add('on');
+    setTimeout(()=>{document.getElementById('fp-s1').style.display='none';document.getElementById('fp-s2').style.display='';},600);
+  }catch{err.textContent='Error';err.classList.add('on');}
+  finally{btnLoad('fp-txt','fp-btn',false,'Send Reset OTP');}
+}
+
+async function doReset(){
+  const otp=document.getElementById('fp-otp').value.trim();
+  const newpass=document.getElementById('fp-newpass').value;
+  const err=document.getElementById('fp-otp-err');err.classList.remove('on');
+  btnLoad('fp-rst-txt','fp-rst-btn',true);
+  try{
+    const d=await fetch(API+'/api/auth/forgot-password',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:fpEmail,otp,new_password:newpass})}).then(r=>r.json());
+    if(d.error){err.textContent=d.error;err.classList.add('on');return;}
+    toast('Password reset!');showPage('page-login');
+  }catch{err.textContent='Error';err.classList.add('on');}
+  finally{btnLoad('fp-rst-txt','fp-rst-btn',false,'Reset Password');}
+}
+
+async function resendOtp(purpose){
+  const email=purpose==='signup'?suEmail:fpEmail;
+  try{await fetch(API+'/api/auth/send-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,purpose})});toast('OTP resent','info');}
+  catch{toast('Failed','err');}
+}
+
+function doLogout(){
+  token='';localStorage.removeItem('foh_token');user=null;clearAllTimers();showPage('page-landing');
+}
+
+// ── Dashboard ──
+async function loadHome(){
+  try{
+    const d=await api('GET','/api/user/profile');
+    user=d;updBal();setSbProf(d);
+  }catch{}
+  try{
+    const d=await api('GET','/api/user/wallet');
+    let spent=0,otps=0,suc=0;
+    d.transactions.forEach(t=>{
+      if(t.type==='debit'){spent+=t.amount;otps++;}
+      if(t.description&&t.description.toLowerCase().includes('otp')&&t.type==='debit') suc++;
+    });
+    document.getElementById('home-spent').textContent='₹'+spent.toFixed(0);
+    document.getElementById('home-otps').textContent=otps;
+    document.getElementById('home-rate').textContent=otps?Math.round(suc/otps*100)+'%':'—';
+    renderHomeTxns(d.transactions.slice(0,6));
+  }catch{}
+}
+
+function setSbProf(d){
+  const av=(d.name||'?')[0].toUpperCase();
+  ['sb-avatar','prof-av'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=av;});
+  document.getElementById('sb-name').textContent=d.name||'—';
+  document.getElementById('sb-email').textContent=d.email||'—';
+  document.getElementById('prof-nm').textContent=d.name||'—';
+  document.getElementById('prof-em').textContent=d.email||'—';
+}
+
+function renderHomeTxns(txns){
+  const el=document.getElementById('home-txns');
+  if(!txns.length){el.innerHTML='<div class="empty">No activity yet</div>';return;}
+  el.innerHTML=txns.map(t=>`
+    <div class="al-i">
+      <div class="al-ic ${t.type==='credit'?'cr':'db'}">${t.type==='credit'?'↓':'↑'}</div>
+      <div style="flex:1;min-width:0"><div class="al-d">${esc(t.description||'—')}</div><div class="al-t">${fmtDate(t.created_at)}</div></div>
+      <div class="al-a ${t.type==='credit'?'cr':'db'}">${t.type==='credit'?'+':'-'}₹${parseFloat(t.amount).toFixed(2)}</div>
+    </div>`).join('');
+}
+
+// ── Services ──
+async function loadSvcs(){
+  try{
+    const d=await api('GET','/api/services');
+    allSvcs=d;renderSvcs(d);
+    document.getElementById('svc-loading').style.display='none';
+  }catch{document.getElementById('svc-loading').innerHTML='<span style="color:var(--red);font-size:.68rem">Failed to load</span>';}
+}
+
+function renderSvcs(svcs){
+  const el=document.getElementById('svc-list'),empty=document.getElementById('svc-empty');
+  if(!svcs.length){el.innerHTML='';empty.style.display='';return;}
+  empty.style.display='none';
+  el.innerHTML=svcs.map(s=>`
+    <div class="svc-i" id="svc-${s._id}" onclick="selSvcFn('${s._id}','${escA(s.name)}',${parseFloat(s.price)})">
+      <div class="svc-logo">${s.logo_url?`<img src="${escA(s.logo_url)}" alt="">`:s.name[0].toUpperCase()}</div>
+      <div class="svc-inf"><div class="svc-nm">${esc(s.name)}</div><div class="svc-pr">₹${parseFloat(s.price).toFixed(2)} / OTP</div></div>
+      <div class="chk" id="sck-${s._id}"></div>
+    </div>`).join('');
+}
+
+function filterSvcs(q){renderSvcs(allSvcs.filter(s=>s.name.toLowerCase().includes(q.toLowerCase())));}
+
+function selSvcFn(id,name,price){
+  selSvc={id,name,price};
+  showBS(2);
+  document.getElementById('srv-svc-nm').textContent=name;
+  loadServers();
+}
+
+async function loadServers(){
+  document.getElementById('srv-chips').innerHTML='';
+  document.getElementById('srv-loading').style.display='block';
+  document.getElementById('srv-next-btn').style.display='none';
+  document.getElementById('slot-count-wrap').style.display='none';
+  selServer=null;slotCount=1;
+  try{
+    const d=await api('GET','/api/servers');
+    document.getElementById('srv-loading').style.display='none';
+    renderServers(d.servers);
+  }catch{document.getElementById('srv-loading').innerHTML='<span style="color:var(--red);font-size:.68rem">Failed</span>';}
+}
+
+function renderServers(srvs){
+  const el=document.getElementById('srv-chips');
+  // Add "All Servers (Multi)" as first option
+  const all=[...srvs,'All Servers'];
+  el.innerHTML=all.map(s=>`<div class="srv-chip" id="srv-${s.replace(/\s/g,'_')}" onclick="selServerFn('${s}',this)">${s}</div>`).join('');
+}
+
+function selServerFn(name,el){
+  document.querySelectorAll('.srv-chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  selServer=name;
+  document.getElementById('slot-count-wrap').style.display='';
+  renderSlotChips();
+  document.getElementById('srv-next-btn').style.display='';
+}
+
+function renderSlotChips(){
+  const el=document.getElementById('slot-count-chips');
+  el.innerHTML=[1,2,3,4,5].map(n=>`
+    <div class="srv-chip ${n===slotCount?'sel':''}" onclick="setSlotCount(${n},this)">${n} OTP${n>1?'s':''}</div>`).join('');
+}
+
+function setSlotCount(n,el){
+  slotCount=n;
+  document.querySelectorAll('#slot-count-chips .srv-chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function showBS(n){
+  document.querySelectorAll('.buy-step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('bs'+n).classList.add('active');
+  if(n===3) buildConfirm();
+}
+
+function buildConfirm(){
+  if(!selSvc||!selServer)return;
+  document.getElementById('cf-svc').textContent=selSvc.name;
+  document.getElementById('cf-srv').textContent=selServer;
+  document.getElementById('cf-slots').textContent=slotCount;
+  document.getElementById('cf-price').textContent='₹'+selSvc.price.toFixed(2);
+  document.getElementById('cf-total').textContent='₹'+(selSvc.price*slotCount).toFixed(2);
+  const bal=parseFloat(user?.wallet_balance||0);
+  document.getElementById('cf-bal').textContent='₹'+bal.toFixed(2);
+  const warn=document.getElementById('cf-warn');
+  warn.style.display=bal<selSvc.price*slotCount?'block':'none';
+}
+
+// ── Multi-order creation ──
+async function doCreateOrders(){
+  if(!selSvc||!selServer)return;
+  btnLoad('cf-buy-txt','cf-buy-btn',true);
+  activeOrders=[];
+
+  // determine which servers to use
+  let servers=[];
+  if(selServer==='All Servers'){
+    // fetch available servers and spread slots across them
+    try{const d=await api('GET','/api/servers');servers=d.servers;}catch{servers=['Server1'];}
+    // cycle servers for each slot
+    const baseServers=servers.length>0?servers:['Server1'];
+    for(let i=0;i<slotCount;i++) servers[i%slotCount]=baseServers[i%baseServers.length];
+  }else{
+    for(let i=0;i<slotCount;i++) servers.push(selServer);
+  }
+
+  const created=[];
+  let firstExpiry=null;
+  for(let i=0;i<slotCount;i++){
+    try{
+      const d=await api('POST','/api/orders/create',{service_id:selSvc.id,server:servers[i]||selServer});
+      created.push({
+        order_id:d.order_id,number:d.number,service:d.service,
+        server:servers[i],price:d.price,
+        status:'pending',otp:null,sms:null,
+        expires_at:d.expires_at,can_cancel_at:d.can_cancel_at,
+        pollTimer:null
+      });
+      if(!firstExpiry) firstExpiry=d.expires_at;
+      user.wallet_balance=(parseFloat(user.wallet_balance||0)-parseFloat(d.price)).toFixed(2);
+      updBal();
+    }catch(e){toast('Slot '+(i+1)+': '+e.message,'err');}
+  }
+
+  if(!created.length){btnLoad('cf-buy-txt','cf-buy-btn',false,'✓ Confirm & Get Numbers');return;}
+  activeOrders=created;
+  showBS(4);
+  renderOtpSlots();
+  startGlobalCountdown(firstExpiry);
+  created.forEach(o=>startSlotPoll(o));
+  toast('Orders placed! Waiting for OTPs...','info');
+  btnLoad('cf-buy-txt','cf-buy-btn',false,'✓ Confirm & Get Numbers');
+
+  document.getElementById('ord-svc-nm').textContent=selSvc.name;
+  if(created.length===1){
+    document.getElementById('ord-main-num').textContent=created[0].number;
+  }else{
+    document.getElementById('ord-main-num').textContent=created.length+' Numbers';
+  }
+}
+
+function renderOtpSlots(){
+  const wrap=document.getElementById('otp-slots-wrap');
+  if(!activeOrders.length){wrap.innerHTML='<div class="empty">No active orders</div>';return;}
+  wrap.innerHTML=activeOrders.map((o,i)=>`
+    <div class="otp-slot ${o.status==='success'?'got':'wait'}" id="slot-${o.order_id}">
+      <div class="otp-slot-info">
+        <div class="otp-slot-svc">${esc(o.service||'—')} — Slot ${i+1}</div>
+        <div class="otp-slot-num">${esc(o.number||'Allocating...')}</div>
+        ${o.status==='success'?`<div class="otp-slot-code" onclick="navigator.clipboard.writeText('${escA(o.otp||'')}').then(()=>toast('Copied!'))">${esc(o.otp||'—')}</div>${o.sms?`<div class="otp-slot-sms">${esc(o.sms)}</div>`:''}`
+          :o.status==='cancelled'?`<div style="font-family:var(--mono);font-size:.65rem;color:var(--red)">Cancelled</div>`
+          :o.status==='expired'?`<div style="font-family:var(--mono);font-size:.65rem;color:var(--red)">Expired — Refunded</div>`
+          :`<div class="otp-slot-wait"><span class="spin"></span>Waiting<span class="wait-dots"></span></div>`}
+      </div>
+      <div class="otp-slot-acts">
+        ${o.status==='success'?`<button class="slot-copy" onclick="navigator.clipboard.writeText('${escA(o.otp||'')}').then(()=>toast('Copied!'))">Copy</button>`:''}
+        ${o.status==='pending'?`<button class="slot-cancel" id="cancel-${o.order_id}" style="display:none" onclick="cancelSlot('${o.order_id}')">Cancel</button>`:''}
+        <span class="sbadge ${o.status}">${o.status==='pending'?'<span class="pdot"></span>':''} ${o.status}</span>
+      </div>
+    </div>`).join('');
+}
+
+function startSlotPoll(ord){
+  const canCancelTime=new Date(ord.can_cancel_at).getTime();
+  ord.pollTimer=setInterval(async()=>{
+    if(ord.status!=='pending'){clearInterval(ord.pollTimer);return;}
+    if(Date.now()>=canCancelTime){
+      const cancelBtn=document.getElementById('cancel-'+ord.order_id);
+      if(cancelBtn) cancelBtn.style.display='';
+    }
+    try{
+      const d=await api('GET','/api/orders/'+ord.order_id+'/poll');
+      if(d.status==='success'){
+        ord.status='success';ord.otp=d.otp_received;ord.sms=d.full_sms||'';
+        clearInterval(ord.pollTimer);
+        renderOtpSlots();updateOverallBadge();
+        user.wallet_balance=await refreshBal();updBal();
+        toast('OTP received for slot!');
+      }else if(d.status==='expired'){
+        ord.status='expired';clearInterval(ord.pollTimer);
+        renderOtpSlots();updateOverallBadge();
+        user.wallet_balance=await refreshBal();updBal();
+        toast('Slot expired — refunded','info');
+      }else if(d.status==='cancelled'){
+        ord.status='cancelled';clearInterval(ord.pollTimer);
+        renderOtpSlots();updateOverallBadge();
+      }
+    }catch{}
+  },4000);
+}
+
+function updateOverallBadge(){
+  const el=document.getElementById('bs4-overall-badge');
+  const all=activeOrders.length;
+  const got=activeOrders.filter(o=>o.status==='success').length;
+  const pending=activeOrders.filter(o=>o.status==='pending').length;
+  if(pending>0){
+    el.innerHTML=`<span class="sbadge pending"><span class="pdot"></span>${got}/${all} received</span>`;
+  }else if(got===all){
+    el.innerHTML=`<span class="sbadge success">All ${all} received ✓</span>`;
+  }else{
+    el.innerHTML=`<span class="sbadge cancelled">${got}/${all} received</span>`;
+  }
+}
+
+function startGlobalCountdown(expiresAt){
+  if(globalCountdown) clearInterval(globalCountdown);
+  const exp=new Date(expiresAt).getTime();
+  globalCountdown=setInterval(()=>{
+    const left=Math.max(0,exp-Date.now());
+    const m=Math.floor(left/60000),s=Math.floor((left%60000)/1000);
+    document.getElementById('ord-timer').textContent=m+':'+String(s).padStart(2,'0');
+    if(left===0) clearInterval(globalCountdown);
+  },1000);
+}
+
+async function cancelSlot(orderId){
+  const ord=activeOrders.find(o=>o.order_id===orderId);
+  if(!ord) return;
+  try{
+    const d=await api('POST','/api/orders/'+orderId+'/cancel');
+    ord.status='cancelled';
+    if(ord.pollTimer) clearInterval(ord.pollTimer);
+    renderOtpSlots();updateOverallBadge();
+    user.wallet_balance=await refreshBal();updBal();
+    toast('Cancelled. ₹'+d.refund+' refunded.','info');
+  }catch(e){toast(e.message,'err');}
+}
+
+function resetBuy(){
+  clearAllTimers();activeOrders=[];
+  showBS(1);
+  document.getElementById('ord-svc-nm').textContent='—';
+  document.getElementById('ord-main-num').textContent='Waiting...';
+  document.getElementById('ord-timer').textContent='10:00';
+  document.getElementById('bs4-overall-badge').innerHTML='';
+}
+
+function clearAllTimers(){
+  if(globalCountdown){clearInterval(globalCountdown);globalCountdown=null;}
+  activeOrders.forEach(o=>{if(o.pollTimer) clearInterval(o.pollTimer);});
+}
+
+async function refreshBal(){
+  try{const d=await api('GET','/api/user/profile');user=d;return d.wallet_balance;}
+  catch{return user?.wallet_balance||0;}
+}
+
+// ── DEPOSIT — UPI Steps ──
+function switchDep(mode){
+  document.querySelectorAll('.dep-step').forEach(b=>b.classList.remove('act'));
+  document.querySelectorAll('.dep-view').forEach(v=>v.classList.remove('act'));
+  document.getElementById('dep-tab-'+mode).classList.add('act');
+  document.getElementById('dep-'+mode).classList.add('act');
+}
+
+function goUs1(){
+  document.querySelectorAll('.upi-step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('us1').classList.add('active');
+}
+function goUs2(){
+  const amt=parseFloat(document.getElementById('rch-amt').value);
+  const err=document.getElementById('us1-err');err.classList.remove('on');
+  if(!amt||amt<10){err.textContent='Min ₹10';err.classList.add('on');return;}
+  document.querySelectorAll('.upi-step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('us2').classList.add('active');
+  genQR(amt);
+}
+function goUs3(){
+  document.querySelectorAll('.upi-step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('us3').classList.add('active');
+}
+
+async function loadUpiId(){
+  try{
+    const d=await api('GET','/api/payment/upi-details');
+    upiId=d.upi_id||'';
+    document.getElementById('upi-val').textContent=upiId||'N/A';
+  }catch{}
+}
+
+function copyUpi(){
+  if(!upiId)return;
+  navigator.clipboard.writeText(upiId).then(()=>toast('UPI ID copied!'));
+}
+
+function setAmt(val,el){
+  document.querySelectorAll('.amt-chip').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('rch-amt').value=val;
+}
+function clearAmtChips(){document.querySelectorAll('.amt-chip').forEach(b=>b.classList.remove('sel'));}
+
+function genQR(amt){
+  if(!amt||amt<10||!upiId){document.getElementById('qr-box').style.display='none';return;}
+  document.getElementById('qr-box').style.display='';
+  document.getElementById('qr-amt-lbl').textContent='₹'+parseFloat(amt).toFixed(2);
+  const container=document.getElementById('qr-container');
+  container.innerHTML='';
+  const upiStr=`upi://pay?pa=${encodeURIComponent(upiId)}&pn=SastaOTP&am=${amt}&cu=INR`;
+  try{new QRCode(container,{text:upiStr,width:164,height:164,colorDark:'#000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});}
+  catch{}
+}
+function updateQR(){genQR(parseFloat(document.getElementById('rch-amt').value));}
+
+function onScreenshot(inp){
+  ssFile=inp.files[0];
+  if(!ssFile)return;
+  const prev=document.getElementById('upload-prev'),hint=document.getElementById('upload-hint');
+  prev.src=URL.createObjectURL(ssFile);prev.style.display='block';hint.style.display='none';
+}
+
+async function doRecharge(){
+  const amt=parseFloat(document.getElementById('rch-amt').value);
+  const err=document.getElementById('rch-err');err.classList.remove('on');
+  if(!amt||amt<10){err.textContent='Min ₹10';err.classList.add('on');return;}
+  if(!ssFile){err.textContent='Upload payment screenshot';err.classList.add('on');return;}
+  btnLoad('rch-txt','rch-btn',true);
+  try{
+    const fd=new FormData();
+    fd.append('amount',amt);fd.append('screenshot',ssFile);
+    const d=await apiForm('/api/payment/recharge',fd);
+    toast(d.message||'Recharge request submitted!');
+    ssFile=null;
+    document.getElementById('upload-prev').style.display='none';
+    document.getElementById('upload-hint').style.display='';
+    document.getElementById('rch-amt').value='';
+    clearAmtChips();
+    document.getElementById('qr-box').style.display='none';
+    goUs1();loadRchHist();
+  }catch(e){err.textContent=e.message;err.classList.add('on');}
+  finally{btnLoad('rch-txt','rch-btn',false,'Submit Request');}
+}
+
+async function loadRchHist(){
+  try{
+    const d=await api('GET','/api/payment/history');
+    const el=document.getElementById('rch-hist');
+    if(!d.length){el.innerHTML='<div class="empty">No recharge requests</div>';return;}
+    el.innerHTML=d.map(r=>`
+      <div class="rch-i">
+        <div style="flex:1"><div class="ri-a">₹${parseFloat(r.amount).toFixed(2)}</div><div class="ri-d">${fmtDate(r.created_at)}</div></div>
+        <span class="sbadge ${r.status==='approved'?'success':r.status==='rejected'?'expired':'pending'}" style="padding:2px 8px;font-size:.55rem">${r.status}</span>
+      </div>`).join('');
+  }catch{}
+}
+
+// ── Redeem Code ──
+async function doRedeem(){
+  const code=(document.getElementById('rdm-code').value||'').trim().toUpperCase();
+  const err=document.getElementById('rdm-err'),ok=document.getElementById('rdm-ok');
+  err.classList.remove('on');ok.classList.remove('on');
+  if(!code){err.textContent='Enter a code';err.classList.add('on');return;}
+  btnLoad('rdm-txt','rdm-btn',true);
+  try{
+    const d=await api('POST','/api/payment/redeem',{code});
+    ok.textContent='✓ ₹'+(d.amount||'?')+' credited to your wallet!';ok.classList.add('on');
+    document.getElementById('rdm-code').value='';
+    user.wallet_balance=await refreshBal();updBal();
+    toast('Code redeemed!');
+  }catch(e){err.textContent=e.message||'Invalid or used code';err.classList.add('on');}
+  finally{btnLoad('rdm-txt','rdm-btn',false,'Redeem Now');}
+}
+
+// ── Orders History ──
+async function loadOrders(){
+  document.getElementById('ord-loading').style.display='block';
+  document.getElementById('ord-list').style.display='none';
+  try{
+    const d=await api('GET','/api/user/orders?limit=60');
+    allOrders=d.orders;
+    document.getElementById('ord-loading').style.display='none';
+    document.getElementById('ord-list').style.display='';
+    document.getElementById('pf-orders').textContent=d.total||0;
+    renderOrders();
+  }catch{document.getElementById('ord-loading').innerHTML='<span style="color:var(--red);font-size:.68rem">Failed</span>';}
+}
+
+function filterOrders(f,el){
+  orderFilter=f;
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('act'));
+  if(el)el.classList.add('act');
+  renderOrders();
+}
+
+function renderOrders(){
+  const filtered=orderFilter==='all'?allOrders:allOrders.filter(o=>o.status===orderFilter);
+  const el=document.getElementById('ord-list');
+  if(!filtered.length){el.innerHTML='<div class="empty">No orders found</div>';return;}
+  el.innerHTML=filtered.map(o=>`
+    <div class="ord-i" onclick="showOrdModal(${escA(JSON.stringify(o))})">
+      <div style="flex:1;min-width:0">
+        <div class="oi-svc">${esc(o.service_name||'—')}</div>
+        <div style="font-family:var(--mono);font-size:.66rem;color:var(--muted);margin-top:2px">${esc(o.number||'—')}</div>
+        <div style="font-family:var(--mono);font-size:.56rem;color:var(--muted);margin-top:2px">${fmtDate(o.created_at)}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div class="oi-price">-₹${parseFloat(o.price||0).toFixed(2)}</div>
+        ${o.otp_received?`<div class="oi-otp">${esc(o.otp_received)}</div>`:''}
+        <div style="margin-top:4px"><span class="sbadge ${o.status}" style="padding:2px 8px;font-size:.52rem">${o.status}</span></div>
+      </div>
+    </div>`).join('');
+}
+
+function showOrdModal(json){
+  let o;try{o=typeof json==='string'?JSON.parse(json):json;}catch{return;}
+  document.getElementById('modal-order-body').innerHTML=`
+    <div class="ic-row"><span class="ic-l">Service</span><span class="ic-v">${esc(o.service_name||'—')}</span></div>
+    <div class="ic-row"><span class="ic-l">Number</span><span class="ic-v" style="font-family:var(--mono)">${esc(o.number||'—')}</span></div>
+    <div class="ic-row"><span class="ic-l">Server</span><span class="ic-v">${esc(o.server_name||'—')}</span></div>
+    <div class="ic-row"><span class="ic-l">Price</span><span class="ic-v">₹${parseFloat(o.price||0).toFixed(2)}</span></div>
+    <div class="ic-row"><span class="ic-l">Status</span><span class="ic-v"><span class="sbadge ${o.status}" style="padding:2px 8px;font-size:.6rem">${o.status}</span></span></div>
+    ${o.otp_received?`<div class="ic-row"><span class="ic-l">OTP</span><span class="ic-v" style="font-family:var(--mono);font-size:1rem;font-weight:700;color:var(--green);cursor:pointer" onclick="navigator.clipboard.writeText('${escA(o.otp_received)}').then(()=>toast('Copied!'))">${esc(o.otp_received)}</span></div>`:''}
+    <div class="ic-row"><span class="ic-l">Date</span><span class="ic-v">${fmtDate(o.created_at)}</span></div>`;
+  openModal('modal-order');
+}
+
+// ── Transactions ──
+async function loadTxns(page=1){
+  if(page===1){document.getElementById('txn-loading').style.display='block';document.getElementById('txn-list').style.display='none';}
+  try{
+    const d=await api('GET','/api/user/wallet');
+    document.getElementById('txn-loading').style.display='none';
+    document.getElementById('txn-list').style.display='';
+    const el=document.getElementById('txn-list');
+    const html=(d.transactions||[]).map(t=>`
+      <div class="txn-i">
+        <div class="txn-ic ${t.type==='credit'?'cr':'db'}">${t.type==='credit'?'↓':'↑'}</div>
+        <div style="flex:1;min-width:0"><div class="txn-desc">${esc(t.description||'—')}</div><div class="txn-date">${fmtDate(t.created_at)}</div></div>
+        <div class="txn-a ${t.type==='credit'?'cr':'db'}">${t.type==='credit'?'+':'-'}₹${parseFloat(t.amount).toFixed(2)}</div>
+      </div>`).join('');
+    if(page===1) el.innerHTML=html||'<div class="empty">No transactions</div>';
+    else el.innerHTML+=html;
+  }catch{document.getElementById('txn-loading').innerHTML='<span style="color:var(--red);font-size:.68rem">Failed</span>';}
+}
+function loadMoreTxns(){txnPage++;loadTxns(txnPage);}
+
+// ── Refer ──
+async function loadRefer(){
+  try{
+    const d=await api('GET','/api/user/profile');
+    user=d;updBal();
+    document.getElementById('refer-code').textContent=d.refer_code||'——';
+    document.getElementById('total-referred').textContent=d.total_referred||0;
+    document.getElementById('refer-reward').textContent=d.refer_reward||10;
+    document.getElementById('r2').textContent=d.refer_reward||10;
+    document.getElementById('r-count').textContent=d.total_referred||0;
+    document.getElementById('refer-earned').textContent=((d.total_referred||0)*(d.refer_reward||10)).toFixed(0);
+  }catch{}
+}
+function copyReferCode(){
+  const code=document.getElementById('refer-code').textContent;
+  if(code&&code!=='——') navigator.clipboard.writeText(code).then(()=>toast('Referral code copied!'));
+}
+
+// ── Profile ──
+async function loadProfile(){
+  try{
+    const d=await api('GET','/api/user/profile');
+    user=d;updBal();setSbProf(d);
+    document.getElementById('pf-name').textContent=d.name||'—';
+    document.getElementById('pf-email').textContent=d.email||'—';
+    document.getElementById('pf-since').textContent=fmtDate(d.created_at);
+  }catch{}
+  try{const d=await api('GET','/api/user/orders?limit=1');document.getElementById('pf-orders').textContent=d.total||0;}
+  catch{}
+}
+
+// ── Apply ──
+async function doApply(){
+  const name=document.getElementById('apply-name').value.trim();
+  const url=document.getElementById('apply-url').value.trim();
+  const desc=document.getElementById('apply-desc').value.trim();
+  const err=document.getElementById('apply-err'),ok=document.getElementById('apply-ok');
+  err.classList.remove('on');ok.classList.remove('on');
+  if(!name){err.textContent='Enter service name';err.classList.add('on');return;}
+  btnLoad('apply-txt','apply-btn',true);
+  try{
+    await api('POST','/api/service-requests',{name,url,description:desc});
+    ok.textContent='✓ Request submitted! We\'ll review within 48h.';ok.classList.add('on');
+    document.getElementById('apply-name').value='';
+    document.getElementById('apply-url').value='';
+    document.getElementById('apply-desc').value='';
+    toast('Request submitted!');
+  }catch{
+    ok.textContent='✓ Request received!';ok.classList.add('on');toast('Request received!');
+  }
+  finally{btnLoad('apply-txt','apply-btn',false,'Submit Request');}
+}
+
+// ── Modal ──
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+
+// ── Util ──
+function fmtDate(ts){
+  if(!ts)return '';
+  const d=new Date(isNaN(ts)?ts:parseInt(ts));
+  if(isNaN(d))return String(ts).slice(0,16);
+  const diff=(Date.now()-d)/1000;
+  if(diff<60) return Math.floor(diff)+'s ago';
+  if(diff<3600) return Math.floor(diff/60)+'m ago';
+  if(diff<86400) return Math.floor(diff/3600)+'h ago';
+  return d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'2-digit'});
+}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function escA(s){return String(s).replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/\\/g,'\\\\');}
+
+initApp();
+</script>
+</body>
+</html>
