@@ -1299,7 +1299,19 @@ function restoreActiveOrdersIfNeeded() {
 async function doCreateOrders() {
   if (!selSvc || !selServer) return;
   btnLoad('cf-buy-txt', 'cf-buy-btn', true);
-  const persisted = loadPersistedOrders(); persisted.forEach(p => {   if (!activeOrders.find(o => o.order_id === p.order_id)) {     activeOrders.push({...p, pollTimer: null});   } }); activeOrders = activeOrders.filter(o => o.status === 'pending' && new Date(o.expires_at).getTime() > Date.now());
+
+  // ✅ পুরনো pending orders গুলো merge করো, replace না করে
+  const persisted = loadPersistedOrders();
+  persisted.forEach(p => {
+    if (!activeOrders.find(o => o.order_id === p.order_id)) {
+      activeOrders.push({...p, pollTimer: null});
+    }
+  });
+  // expired গুলো বাদ দাও শুধু
+  activeOrders = activeOrders.filter(o =>
+    o.status === 'pending' && new Date(o.expires_at).getTime() > Date.now()
+  );
+
   let baseServers = [];
   if (selServer === 'All Servers') {
     try { const d = await api('GET', '/api/servers'); baseServers = d.servers; }
@@ -1310,6 +1322,7 @@ async function doCreateOrders() {
   }
   const slotServers = [];
   for (let i = 0; i < slotCount; i++) slotServers.push(baseServers[i % baseServers.length]);
+
   let firstExpiry = null;
   const now = Date.now();
   for (let i = 0; i < slotCount; i++) {
@@ -1328,23 +1341,36 @@ async function doCreateOrders() {
       updBal();
     } catch (e) { toast('Slot '+(i+1)+': '+e.message, 'err'); }
   }
+
   if (!activeOrders.length) {
     btnLoad('cf-buy-txt', 'cf-buy-btn', false, '✓ Confirm & Get Numbers');
     return;
   }
+
   saveActiveOrders();
   showBS(4);
   document.getElementById('ord-svc-nm').textContent = selSvc.name;
   document.getElementById('ord-main-num').textContent =
-    activeOrders.length === 1 ? activeOrders[0].number : activeOrders.length+' Numbers';
+    activeOrders.length === 1 ? activeOrders[0].number : activeOrders.length + ' Numbers Active';
   renderOtpSlots();
-  startGlobalCountdown(firstExpiry);
-  activeOrders.forEach(o => {   if (o.status === 'pending' && !o.pollTimer) startSlotPoll(o); });
-  updateOverallBadge(); checkActiveBanner();
+
+  // ✅ সব pending orders এর countdown সবচেয়ে দেরিতে expire হওয়াটা দিয়ে দেখাও
+  const latestExpiry = activeOrders.reduce((latest, o) => {
+    const t = new Date(o.expires_at).getTime();
+    return t > latest ? t : latest;
+  }, 0);
+  if (latestExpiry) startGlobalCountdown(new Date(latestExpiry).toISOString());
+
+  // ✅ শুধু নতুন pending orders এর poll শুরু করো
+  activeOrders.forEach(o => {
+    if (o.status === 'pending' && !o.pollTimer) startSlotPoll(o);
+  });
+
+  updateOverallBadge();
+  checkActiveBanner();
   toast('Orders placed! Waiting for OTPs... ⚡', 'info');
   btnLoad('cf-buy-txt', 'cf-buy-btn', false, '✓ Confirm & Get Numbers');
 }
-
 // RENDER OTP SLOTS
 function renderOtpSlots() {
   const wrap = document.getElementById('otp-slots-wrap');
