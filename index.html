@@ -348,27 +348,35 @@ textarea.fi2{resize:vertical;line-height:1.6}
 .active-banner-sub{font-family:var(--mono);font-size:.6rem;color:var(--muted);margin-top:2px}
 
 /* RESPONSIVE — MOBILE FIX */
+html,body{overflow-x:hidden;max-width:100vw}
+#page-main{flex-direction:column}
+@media(min-width:721px){
+  #page-main{flex-direction:row}
+}
 @media(max-width:720px){
-  .sb{transform:translateX(-100%)}
+  .sb{transform:translateX(-100%);width:100vw;max-width:280px}
   .sb.open{transform:translateX(0)}
-  .main-area{margin-left:0;width:100%}
+  .main-area{margin-left:0!important;width:100%!important;max-width:100vw;overflow-x:hidden}
   .topbar{display:flex}
-  .content{padding:12px;width:100%;max-width:100%}
-  .sg{grid-template-columns:1fr 1fr;gap:8px}
+  .content{padding:12px!important;width:100%!important;max-width:100vw!important;box-sizing:border-box;overflow-x:hidden}
+  .sg{grid-template-columns:1fr 1fr!important;gap:8px}
   .toast-w{bottom:14px;right:10px;left:10px;align-items:center}
-  .toast{white-space:normal;text-align:center}
+  .toast{white-space:normal;text-align:center;max-width:100%}
   .ord-num-big{font-size:1rem}
+  .ord-hdr{flex-direction:column;align-items:flex-start}
   .hero-h1{letter-spacing:-1px}
   .feat-grid{grid-template-columns:1fr 1fr}
   .bc-v{font-size:2rem}
   .amt-presets{grid-template-columns:repeat(2,1fr)}
-  .ord-hdr{flex-direction:column;align-items:flex-start}
   .otp-slot{flex-direction:column}
   .otp-slot-acts{flex-direction:row;align-items:center;width:100%}
+  .auth-card{padding:20px 16px}
+  body{overflow-x:hidden}
 }
 @media(max-width:360px){
   .sg{grid-template-columns:1fr}
   .slot-chips{gap:5px}
+  .bc-v{font-size:1.6rem}
 }
 </style>
 </head>
