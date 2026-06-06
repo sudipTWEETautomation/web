@@ -1299,7 +1299,7 @@ function restoreActiveOrdersIfNeeded() {
 async function doCreateOrders() {
   if (!selSvc || !selServer) return;
   btnLoad('cf-buy-txt', 'cf-buy-btn', true);
-  activeOrders = [];
+  const persisted = loadPersistedOrders(); persisted.forEach(p => {   if (!activeOrders.find(o => o.order_id === p.order_id)) {     activeOrders.push({...p, pollTimer: null});   } }); activeOrders = activeOrders.filter(o => o.status === 'pending' && new Date(o.expires_at).getTime() > Date.now());
   let baseServers = [];
   if (selServer === 'All Servers') {
     try { const d = await api('GET', '/api/servers'); baseServers = d.servers; }
@@ -1339,7 +1339,7 @@ async function doCreateOrders() {
     activeOrders.length === 1 ? activeOrders[0].number : activeOrders.length+' Numbers';
   renderOtpSlots();
   startGlobalCountdown(firstExpiry);
-  activeOrders.forEach(o => startSlotPoll(o));
+  activeOrders.forEach(o => {   if (o.status === 'pending' && !o.pollTimer) startSlotPoll(o); });
   updateOverallBadge(); checkActiveBanner();
   toast('Orders placed! Waiting for OTPs... ⚡', 'info');
   btnLoad('cf-buy-txt', 'cf-buy-btn', false, '✓ Confirm & Get Numbers');
