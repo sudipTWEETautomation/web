@@ -1653,7 +1653,7 @@ function renderOrders() {
   const el = document.getElementById('ord-list');
   if (!filtered.length) { el.innerHTML = '<div class="empty">No orders found</div>'; return; }
   el.innerHTML = filtered.map(o => `
-    <div class="ord-i" onclick="showOrdModal(${escJ(o)})">
+    <div class="ord-i" data-order='${escJ(o)}' onclick="showOrdModal(JSON.parse(this.dataset.order))">
       <div style="flex:1;min-width:0">
         <div style="font-size:.82rem;font-weight:700">${esc(o.service_name||'—')}</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--muted);margin-top:2px">${esc(o.number||'—')}</div>
