@@ -878,6 +878,7 @@ const ORDERS_KEY = 'foh_active_orders';
 function saveActiveOrders() {
   const toSave = activeOrders.map(o => ({
     order_id: o.order_id, number: o.number, service: o.service,
+    logo_url: o.logo_url || '',
     server: o.server, price: o.price, status: o.status,
     otp: o.otp, sms: o.sms, expires_at: o.expires_at,
     can_cancel_at: o.can_cancel_at, created_at: o.created_at
