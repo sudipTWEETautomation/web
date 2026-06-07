@@ -1227,7 +1227,7 @@ function renderServerList(srvs) {
       <div class="srv-item" id="srv-item-${s.replace(/\s/g,'_')}" onclick="selServerFn('${escA(s)}',this,${isAll})">
         <div class="srv-radio"><div class="srv-radio-dot"></div></div>
         <div class="srv-name">${esc(s)}</div>
-        ${isAll ? `<span class="srv-badge multi">Multi OTP · max 5</span>` : `<span class="srv-badge">1 OTP</span>`}
+        ${isAll ? `<span class="srv-badge multi">Multi OTP · max 5</span>` : `<span class="srv-badge">₹${selSvc ? selSvc.price.toFixed(2) : '—'}</span>`}
       </div>`;
   }).join('');
 }
