@@ -1666,17 +1666,68 @@ function renderOrders() {
     </div>`).join('');
 }
 function showOrdModal(o) {
+  const isPending = o.status === 'pending';
   document.getElementById('modal-order-body').innerHTML = `
-    <div class="ic-row"><span class="ic-l">Service</span><span class="ic-v">${esc(o.service_name||'—')}</span></div>
-    <div class="ic-row"><span class="ic-l">Number</span><span class="ic-v" style="font-family:var(--mono)">${esc(o.number||'—')}</span></div>
-    <div class="ic-row"><span class="ic-l">Server</span><span class="ic-v">${esc(o.server_name||'—')}</span></div>
+    <div class="ic-row"><span class="ic-l">Service</span><span class="ic-v" style="display:flex;align-items:center;gap:7px">
+      ${o.logo_url ? `<img src="${escA(o.logo_url)}" style="width:18px;height:18px;border-radius:4px;object-fit:cover">` : ''}
+      ${esc(o.service_name||o.service||'—')}
+    </span></div>
+    <div class="ic-row"><span class="ic-l">Number</span>
+      <span class="ic-v" style="font-family:var(--mono);display:flex;align-items:center;gap:8px">
+        ${esc(o.number||'—')}
+        ${o.number ? `<button class="slot-copy" onclick="navigator.clipboard.writeText('${escA(o.number)}').then(()=>toast('Number copied! ✓'))" style="padding:3px 8px;font-size:.55rem">Copy</button>` : ''}
+      </span>
+    </div>
+    <div class="ic-row"><span class="ic-l">Server</span><span class="ic-v">${esc(o.server_name||o.server||'—')}</span></div>
     <div class="ic-row"><span class="ic-l">Price</span><span class="ic-v">₹${parseFloat(o.price||0).toFixed(2)}</span></div>
-    <div class="ic-row"><span class="ic-l">Status</span><span class="ic-v"><span class="sbadge ${o.status}" style="padding:3px 9px;font-size:.6rem">${o.status}</span></span></div>
-    ${o.otp_received ? `<div class="ic-row"><span class="ic-l">OTP</span><span class="ic-v" style="font-family:var(--mono);font-size:1.1rem;font-weight:700;color:var(--green);cursor:pointer;letter-spacing:3px" onclick="navigator.clipboard.writeText('${escA(o.otp_received)}').then(()=>toast('OTP Copied! ✓'))">${esc(o.otp_received)}</span></div>` : ''}
+    <div class="ic-row"><span class="ic-l">Status</span><span class="ic-v"><span class="sbadge ${o.status}" style="padding:3px 9px;font-size:.6rem">${isPending?'<span class="pdot"></span>':''}${o.status}</span></span></div>
+    ${o.otp_received
+      ? `<div class="ic-row"><span class="ic-l">OTP</span>
+          <span class="ic-v" style="font-family:var(--mono);font-size:1.3rem;font-weight:700;color:var(--green);cursor:pointer;letter-spacing:4px;text-shadow:0 0 20px rgba(34,217,122,.4)"
+            onclick="navigator.clipboard.writeText('${escA(o.otp_received)}').then(()=>toast('OTP Copied! ✓'))">
+            ${esc(o.otp_received)} <span style="font-size:.6rem;color:var(--muted);letter-spacing:0">tap to copy</span>
+          </span>
+        </div>`
+      : isPending
+        ? `<div class="ic-row" style="flex-direction:column;align-items:flex-start;gap:10px">
+            <span class="ic-l">OTP</span>
+            <div style="width:100%;background:var(--bg3);border:1px solid rgba(255,184,77,.2);border-radius:var(--r);padding:14px;text-align:center">
+              <div style="font-family:var(--mono);font-size:.66rem;color:var(--amber);margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:7px"><span class="spin"></span>Waiting for OTP...</div>
+              <button class="btn-full" style="margin-bottom:8px" onclick="pollAndShowOtp('${escA(o._id||o.order_id)}')"><span>Check Now</span></button>
+              <button class="btn-full danger" style="opacity:.7" onclick="cancelFromHistory('${escA(o._id||o.order_id)}')"><span>Cancel &amp; Refund</span></button>
+            </div>
+          </div>`
+        : ''
+    }
     ${o.full_sms ? `<div class="ic-row" style="flex-direction:column;align-items:flex-start;gap:6px"><span class="ic-l">Full SMS</span><span style="font-family:var(--mono);font-size:.62rem;color:var(--muted);line-height:1.7;word-break:break-all;background:var(--bg3);padding:10px;border-radius:6px;width:100%;border:1px solid var(--border)">${esc(o.full_sms)}</span></div>` : ''}
     <div class="ic-row"><span class="ic-l">Date</span><span class="ic-v">${fmtDate(o.created_at)}</span></div>`;
   openModal('modal-order');
 }
+
+async function pollAndShowOtp(orderId) {
+  try {
+    const d = await api('GET', '/api/orders/'+orderId+'/poll');
+    if (d.status === 'success') {
+      toast('OTP: ' + d.otp_received + ' ✓');
+      // history reload kore modal update
+      await loadOrders();
+      const updated = allOrders.find(o => (o._id||o.order_id) === orderId);
+      if (updated) showOrdModal(updated);
+    } else {
+      toast('OTP not received yet', 'info');
+    }
+  } catch (e) { toast(e.message, 'err'); }
+}
+
+async function cancelFromHistory(orderId) {
+  try {
+    const d = await api('POST', '/api/orders/'+orderId+'/cancel');
+    toast('Cancelled. ₹'+d.refund+' refunded.', 'info');
+    closeModal('modal-order');
+    loadOrders();
+    user.wallet_balance = await refreshBal(); updBal();
+  } catch (e) { toast(e.message, 'err'); }
+}  
 
 // TRANSACTIONS
 async function loadTxns(page = 1) {
