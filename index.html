@@ -1391,7 +1391,14 @@ function renderOtpSlots() {
         <div id="timer-${o.order_id}" style="font-family:var(--mono);font-size:.65rem;color:var(--amber);margin-top:2px">${o.status==='pending'?'—':''}</div>
         ${o.status==='success'
           ? `<div class="otp-slot-code" onclick="copyOtp('${escA(o.otp||'')}')" title="Tap to copy">${esc(o.otp||'—')}</div>
-             ${o.sms ? `<div class="otp-slot-sms">${esc(o.sms)}</div>` : ''}`
+   ${o.sms ? `<div class="otp-slot-sms">${esc(o.sms)}</div>` : ''}
+   ${(o.otp_list||[]).length > 1 ? `<div style="margin-top:8px;display:flex;flex-direction:column;gap:4px">
+     ${(o.otp_list||[]).slice(0,-1).map((x,i)=>`<div style="font-family:var(--mono);font-size:.62rem;color:var(--muted)">OTP ${i+1}: ${esc(x.otp)}</div>`).join('')}
+   </div>` : ''}
+   ${o.next_otp_price != null && o.otp_count < 5 && new Date(o.expires_at).getTime() > Date.now()
+     ? `<button class="g-btn g-btn-sm" style="margin-top:8px;color:var(--green);border-color:rgba(34,217,122,.3)" onclick="requestNextOtp('${escA(o.order_id)}',${o.next_otp_price},this)">Get OTP ${(o.otp_count||1)+1} +₹${o.next_otp_price}</button>`
+     : ''
+   }`
           : o.status==='cancelled'
             ? `<div style="font-family:var(--mono);font-size:.66rem;color:var(--red)">Cancelled — Refunded</div>`
             : o.status==='expired'
@@ -1416,6 +1423,28 @@ function renderOtpSlots() {
 function copyOtp(otp) {
   navigator.clipboard.writeText(otp).then(() => toast('OTP copied! ✓'));
 }
+
+ async function requestNextOtp(orderId, price, btn) {
+  btn.disabled = true;
+  btn.textContent = 'Charging...';
+  try {
+    const d = await api('POST', '/api/orders/'+orderId+'/next-otp');
+    toast(d.message + ' · ₹'+d.charged+' charged', 'info');
+    // order status pending হয়ে গেছে, poll restart করো
+    const ord = activeOrders.find(o => o.order_id === orderId);
+    if (ord) {
+      ord.status = 'pending';
+      ord.pollTimer = null;
+      renderOtpSlots();
+      startSlotPoll(ord);
+    }
+  } catch(e) {
+    toast(e.message, 'err');
+    btn.disabled = false;
+    btn.textContent = `Get next OTP +₹${price}`;
+  }
+}
+  
 function cancelEarly(orderId, secLeft) {
   const mins = Math.ceil(secLeft / 60);
   toast(`Wait ${secLeft < 60 ? secLeft+'s' : mins+'m'} before cancelling`, 'info');
@@ -1446,7 +1475,7 @@ function startSlotPoll(ord) {
     try {
       const d = await api('GET', '/api/orders/'+ord.order_id+'/poll');
       if (d.status === 'success') {
-        ord.status = 'success'; ord.otp = d.otp_received; ord.sms = d.full_sms || '';
+        ord.status = 'success'; ord.otp = d.otp_received; ord.sms = d.full_sms || ''; ord.otp_count = d.otp_count || 1; ord.otp_list = d.otp_list || []; ord.next_otp_price = d.next_otp_price ?? null; ord.expires_at = d.expires_at || ord.expires_at;
         clearInterval(ord.pollTimer); clearInterval(ord.timerInterval);
         saveActiveOrders(); renderOtpSlots(); updateOverallBadge(); checkActiveBanner();
         user.wallet_balance = await refreshBal(); updBal();
