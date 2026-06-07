@@ -1193,7 +1193,7 @@ function renderSvcs(svcs) {
 function filterSvcs(q) {
   renderSvcs(allSvcs.filter(s => s.name.toLowerCase().includes(q.toLowerCase())));
 }
-function selSvcFn(id, name, price) {
+function selSvcFn(id, name, price, logoUrl) {
   selSvc = { id, name, price, logo_url: logoUrl || '' };
   showBS(2);
   document.getElementById('srv-svc-nm').textContent = name;
