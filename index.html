@@ -1181,7 +1181,7 @@ function renderSvcs(svcs) {
   if (!svcs.length) { el.innerHTML = ''; empty.style.display = ''; return; }
   empty.style.display = 'none';
   el.innerHTML = svcs.map(s => `
-    <div class="svc-i" id="svc-${s._id}" onclick="selSvcFn('${s._id}','${escA(s.name)}',${parseFloat(s.price)})">
+    <div class="svc-i" id="svc-${s._id}" onclick="selSvcFn('${s._id}','${escA(s.name)}',${parseFloat(s.price)},'${escA(s.logo_url||'')}')">
       <div class="svc-logo">${s.logo_url ? `<img src="${escA(s.logo_url)}" alt="">` : s.name[0].toUpperCase()}</div>
       <div class="svc-inf">
         <div class="svc-nm">${esc(s.name)}</div>
@@ -1194,7 +1194,7 @@ function filterSvcs(q) {
   renderSvcs(allSvcs.filter(s => s.name.toLowerCase().includes(q.toLowerCase())));
 }
 function selSvcFn(id, name, price) {
-  selSvc = { id, name, price };
+  selSvc = { id, name, price, logo_url: logoUrl || '' };
   showBS(2);
   document.getElementById('srv-svc-nm').textContent = name;
   loadServers();
@@ -1330,6 +1330,7 @@ async function doCreateOrders() {
       const d = await api('POST', '/api/orders/create', { service_id: selSvc.id, server: slotServers[i] });
       activeOrders.push({
         order_id: d.order_id, number: d.number, service: d.service,
+        logo_url: selSvc.logo_url || '',
         server: slotServers[i], price: d.price, status: 'pending',
         otp: null, sms: null, expires_at: d.expires_at,
         can_cancel_at: d.can_cancel_at,
@@ -1384,7 +1385,7 @@ function renderOtpSlots() {
     return `
     <div class="otp-slot ${o.status==='success'?'got':'wait'}" id="slot-${o.order_id}">
       <div class="otp-slot-info">
-        <div class="otp-slot-svc" style="display:flex;align-items:center;gap:7px">   ${(() => { const svc = allSvcs.find(s => s.name === o.service); return svc?.logo_url ? `<img src="${escA(svc.logo_url)}" style="width:18px;height:18px;border-radius:4px;object-fit:cover">` : `<div style="width:18px;height:18px;border-radius:4px;background:var(--acc3);display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:700;color:var(--acc)">${esc((o.service||'?')[0].toUpperCase())}</div>`; })()}   ${esc(o.service||'—')} — Slot ${i+1} </div>
+        <div class="otp-slot-svc" style="display:flex;align-items:center;gap:8px;font-size:.88rem;font-weight:800">           ${o.logo_url             ? `<img src="${escA(o.logo_url)}" style="width:22px;height:22px;border-radius:6px;object-fit:cover;flex-shrink:0">`             : `<div style="width:22px;height:22px;border-radius:6px;background:var(--acc3);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:var(--acc);flex-shrink:0">${esc((o.service||'?')[0].toUpperCase())}</div>`           }           ${esc(o.service||'—')} — Slot ${i+1}         </div>
         <div class="otp-slot-num" style="display:flex;align-items:center;gap:8px">   ${esc(o.number||'Allocating...')}   ${o.number ? `<button class="slot-copy" onclick="navigator.clipboard.writeText('${escA(o.number)}').then(()=>toast('Number copied! ✓'))" style="padding:3px 8px;font-size:.55rem">Copy</button>` : ''} </div>
         <div id="timer-${o.order_id}" style="font-family:var(--mono);font-size:.65rem;color:var(--amber);margin-top:2px">${o.status==='pending'?'—':''}</div>
         ${o.status==='success'
