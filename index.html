@@ -1384,8 +1384,8 @@ function renderOtpSlots() {
     return `
     <div class="otp-slot ${o.status==='success'?'got':'wait'}" id="slot-${o.order_id}">
       <div class="otp-slot-info">
-        <div class="otp-slot-svc">${esc(o.service||'—')} — Slot ${i+1}</div>
-        <div class="otp-slot-num">${esc(o.number||'Allocating...')}</div>
+        <div class="otp-slot-svc" style="display:flex;align-items:center;gap:7px">   ${(() => { const svc = allSvcs.find(s => s.name === o.service); return svc?.logo_url ? `<img src="${escA(svc.logo_url)}" style="width:18px;height:18px;border-radius:4px;object-fit:cover">` : `<div style="width:18px;height:18px;border-radius:4px;background:var(--acc3);display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:700;color:var(--acc)">${esc((o.service||'?')[0].toUpperCase())}</div>`; })()}   ${esc(o.service||'—')} — Slot ${i+1} </div>
+        <div class="otp-slot-num" style="display:flex;align-items:center;gap:8px">   ${esc(o.number||'Allocating...')}   ${o.number ? `<button class="slot-copy" onclick="navigator.clipboard.writeText('${escA(o.number)}').then(()=>toast('Number copied! ✓'))" style="padding:3px 8px;font-size:.55rem">Copy</button>` : ''} </div>
         <div id="timer-${o.order_id}" style="font-family:var(--mono);font-size:.65rem;color:var(--amber);margin-top:2px">${o.status==='pending'?'—':''}</div>
         ${o.status==='success'
           ? `<div class="otp-slot-code" onclick="copyOtp('${escA(o.otp||'')}')" title="Tap to copy">${esc(o.otp||'—')}</div>
