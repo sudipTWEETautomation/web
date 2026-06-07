@@ -598,10 +598,7 @@ html,body{overflow-x:hidden;max-width:100vw}
           <div class="srv-list" id="srv-list"></div>
 
           <!-- Slot count only for All Servers -->
-          <div class="slot-section" id="slot-section">
-            <div class="slot-label">How many OTP numbers? (max 5)</div>
-            <div class="slot-chips" id="slot-chips"></div>
-          </div>
+          <div class="slot-section" id="slot-section" style="display:none"></div>
 
           <button class="btn-full" id="srv-next-btn" style="display:none;margin-top:4px" onclick="showBS(3)">Continue →</button>
         </div>
@@ -1227,7 +1224,7 @@ function renderServerList(srvs) {
       <div class="srv-item" id="srv-item-${s.replace(/\s/g,'_')}" onclick="selServerFn('${escA(s)}',this,${isAll})">
         <div class="srv-radio"><div class="srv-radio-dot"></div></div>
         <div class="srv-name">${esc(s)}</div>
-        ${isAll ? `<span class="srv-badge multi">Multi OTP · max 5</span>` : `<span class="srv-badge">₹${selSvc ? selSvc.price.toFixed(2) : '—'}</span>`}
+        ${isAll ? `<span class="srv-badge multi">All Servers</span>` : `<span class="srv-badge">₹${selSvc ? selSvc.price.toFixed(2) : '—'}</span>`}
       </div>`;
   }).join('');
 }
@@ -1238,8 +1235,6 @@ function selServerFn(name, el, isAll) {
   slotCount = isAll ? (slotCount > 1 ? slotCount : 1) : 1;
 
   if (isAll) {
-    document.getElementById('slot-section').classList.add('show');
-    renderSlotChips();
   } else {
     document.getElementById('slot-section').classList.remove('show');
     slotCount = 1;
