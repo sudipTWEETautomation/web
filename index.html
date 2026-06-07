@@ -1769,7 +1769,7 @@ document.querySelectorAll('.modal-ov').forEach(o =>
 // UTILITIES
 function fmtDate(ts) {
   if (!ts) return '';
-  const d = new Date(isNaN(ts) ? ts : parseInt(ts));
+  const s = String(ts); const d = new Date(s.includes('T') && !s.endsWith('Z') ? s + 'Z' : s);
   if (isNaN(d)) return String(ts).slice(0, 16);
   return d.toLocaleString('en-IN', {
     timeZone: 'Asia/Kolkata',
