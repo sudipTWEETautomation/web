@@ -1410,7 +1410,7 @@ function renderOtpSlots() {
           ? canCancelNow
             ? `<button class="slot-cancel ready" id="cancel-${o.order_id}" onclick="cancelSlot('${o.order_id}')">Cancel</button>`
             : `<button class="slot-cancel" id="cancel-${o.order_id}" onclick="cancelEarly('${o.order_id}',${secLeft})" data-ready="false">Cancel</button>`
-          : ''}
+          : `<button class="slot-cancel" onclick="removeSlot('${o.order_id}')">✕ Remove</button>`}
         <span class="sbadge ${o.status}">${o.status==='pending'?'<span class="pdot"></span>':''} ${o.status}</span>
       </div>
     </div>`;
@@ -1446,6 +1446,14 @@ function cancelEarly(orderId, secLeft) {
   toast(`Wait ${secLeft < 60 ? secLeft+'s' : mins+'m'} before cancelling`, 'info');
 }
 
+function removeSlot(orderId) {
+  activeOrders = activeOrders.filter(o => o.order_id !== orderId);
+  saveActiveOrders();
+  checkActiveBanner();
+  if (!activeOrders.length) { showBS(1); }
+  else { renderOtpSlots(); updateOverallBadge(); }
+}
+  
 // SLOT POLLING
 function startSlotPoll(ord) {
   const exp = Date.now() + (10 * 60 * 1000);
